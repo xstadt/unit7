@@ -98,7 +98,7 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 <div onClick="{{ t.open }}" onKeyDown="{{ t.key }}" tabindex="0" role="button" aria-label="{{ t.aria }}" style="position:relative;cursor:pointer;transition:transform .1s ease" style-hover="transform:translate(-2px,-2px)">
 <div style="{{ t.style }}">
 <div style="{{ t.screen }}"></div>
-<div style="position:absolute;bottom:6px;left:7px;font-size:8.5px;letter-spacing:.12em;color:rgba(243,239,228,.65);pointer-events:none">{{ t.label }}</div>
+<div style="position:absolute;bottom:6px;left:7px;font-size:8.5px;letter-spacing:.12em;color:rgba(243,239,228,.82);text-shadow:0 1px 3px rgba(0,0,0,.75);pointer-events:none">{{ t.label }}</div>
 </div>
 </div>
 </sc-for>
@@ -119,7 +119,7 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 <div onClick="{{ w.toggleZoom }}" style="{{ w.plate }}">
 <div style="{{ w.plateInner }}"></div>
 <div style="{{ w.screen }}" style-hover="opacity:0;animation:dfGlitch .4s steps(2) 1"></div>
-<div style="position:absolute;bottom:10px;left:10px;font-size:9.5px;letter-spacing:.14em;color:rgba(243,239,228,.65);pointer-events:none">{{ w.plateLabel }}</div>
+<div style="position:absolute;bottom:10px;left:10px;font-size:9.5px;letter-spacing:.14em;color:rgba(243,239,228,.82);text-shadow:0 1px 3px rgba(0,0,0,.75);pointer-events:none">{{ w.plateLabel }}</div>
 </div>
 <div style="display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
 <span onClick="{{ w.prev }}" onKeyDown="{{ w.prevKey }}" tabindex="0" role="button" aria-label="Previous frame" style="border:3px solid #14131a;background:#f3efe4;box-shadow:3px 3px 0 #14131a;padding:5px 11px;font-size:13px;font-weight:700;cursor:pointer" style-hover="background:#f2c94c">‹</span>
@@ -594,7 +594,7 @@ class Component extends DCLogic {
   }
   imgBg(f, size, seed) {
     const url = f && f.image ? (size === 'full' ? f.image.full : f.image.thumb) : '';
-    if (url) return "background-image:url('" + url + "');background-size:cover;background-position:center";
+    if (url) return "background-image:url('" + url + "');background-size:" + (arguments[3] || 'cover') + ";background-position:center;background-repeat:no-repeat";
     return 'background-image:' + this.plateBg(seed);
   }
   lqipBg(f) {
@@ -702,7 +702,7 @@ class Component extends DCLogic {
           key: this.keyActivate(() => this.openFrame(f)),
           aria: 'Open ' + f.title,
           style: 'position:relative;height:104px;border:3px solid #14131a;overflow:hidden;background-color:#191722;' + (w.loading ? (this.lqipBg(f) || 'background-image:' + this.plateBg(i + list.length)) : this.imgBg(f, 'thumb', i + list.length)),
-          screen: w.loading ? this.dither(g.color) : dot(g.color === '#f3efe4' ? '#e77aa6' : g.color),
+          screen: w.loading ? this.dither(g.color) : (f.image ? '' : dot(g.color === '#f3efe4' ? '#e77aa6' : g.color)),
           label: w.loading ? '' : (g.code || 'IMG') + '-' + String(i + 1).padStart(3, '0')
         }));
       }
@@ -746,10 +746,14 @@ class Component extends DCLogic {
           base.message = 'This frame is no longer in the Sanity dataset.';
           return base;
         }
-        base.plate = 'position:relative;height:' + (w.zoom ? 340 : 290) + 'px;border:3px solid #14131a;overflow:hidden;background:#191722;cursor:' + (w.zoom ? 'zoom-out' : 'zoom-in');
-        base.plateInner = 'position:absolute;inset:0;background-color:#191722;' + (w.loading ? (this.lqipBg(f) || 'background-image:' + this.plateBg(f.idx + g.count)) : this.imgBg(f, 'full', f.idx + g.count)) + ';transform:scale(' + (w.zoom ? 2.6 : 1) + ');transform-origin:center;transition:transform .18s ease';
-        base.screen = w.loading ? this.dither(g.color) : dot('#f2c94c');
-        base.plateLabel = w.loading ? '[ LOADING ' + g.code + '-' + String(f.idx + 1).padStart(3, '0') + ' ]' : '[ ' + f.title.toUpperCase() + ' · 2400×1600 ]';
+        const ar = f.image && f.image.w && f.image.h ? (f.image.w / f.image.h) : 1.5;
+        base.plate = 'position:relative;border:3px solid #14131a;overflow:hidden;background:#191722;cursor:' + (w.zoom ? 'zoom-out' : 'zoom-in') + ';' +
+          (w.zoom ? 'height:340px' : 'width:100%;aspect-ratio:' + ar.toFixed(4) + ';max-height:' + (a.H > 900 ? 560 : 420) + 'px');
+        base.plateInner = 'position:absolute;inset:0;background-color:#191722;' + (w.loading ? (this.lqipBg(f) || 'background-image:' + this.plateBg(f.idx + g.count)) : this.imgBg(f, 'full', f.idx + g.count, w.zoom ? 'cover' : 'contain')) + ';transform:scale(' + (w.zoom ? 2.6 : 1) + ');transform-origin:center;transition:transform .18s ease';
+        base.screen = w.loading ? this.dither(g.color) : (f.image ? '' : dot('#f2c94c'));
+        base.plateLabel = w.loading
+          ? '[ LOADING ' + g.code + '-' + String(f.idx + 1).padStart(3, '0') + ' ]'
+          : '[ ' + f.title.toUpperCase() + (f.image && f.image.w ? ' · ' + f.image.w + '×' + f.image.h : '') + ' ]';
         base.frameTitle = f.title;
         base.exif = f.shutter + ' · f/' + f.ap + ' · ' + f.focal + 'mm · ISO ' + f.iso + ' · ' + f.place;
         base.tag = 'font-family:Silkscreen,monospace;font-size:10px;flex:none;background:' + g.color + ';border:2px solid #14131a;padding:4px 7px';
