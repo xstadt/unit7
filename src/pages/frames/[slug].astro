@@ -1,0 +1,137 @@
+---
+import { query, imageUrl, FRAMES_QUERY } from '../../lib/sanity.js';
+
+export async function getStaticPaths() {
+  const frames = await query(FRAMES_QUERY);
+  return frames.map((frame, i) => {
+    const siblings = frames.filter(f => f.genre?.slug === frame.genre?.slug);
+    const at = siblings.findIndex(f => f.slug === frame.slug);
+    return {
+      params: { slug: frame.slug },
+      props: {
+        frame,
+        prev: siblings[at - 1] || null,
+        next: siblings[at + 1] || null,
+        position: at + 1,
+        total: siblings.length
+      }
+    };
+  });
+}
+
+const { frame, prev, next, position, total } = Astro.props;
+const accent = frame.genre?.color || '#e77aa6';
+const year = frame.shotAt || frame._createdAt
+  ? new Date(frame.shotAt || frame._createdAt).getFullYear()
+  : '';
+const shotOn = frame.shotAt
+  ? new Date(frame.shotAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  : '';
+
+const rows = [
+  ['ALBUM', frame.genre?.name],
+  ['PLACE', frame.place],
+  ['SHOT', shotOn],
+  ['FOCAL', frame.focal ? frame.focal + 'mm' : ''],
+  ['APERTURE', frame.ap ? 'f/' + frame.ap : ''],
+  ['SHUTTER', frame.shutter],
+  ['ISO', frame.iso],
+  ['GEAR', frame.gear]
+].filter(([, v]) => v !== null && v !== undefined && v !== '');
+
+const title = frame.title || 'Untitled';
+const social = imageUrl(frame.asset?.ref, { w: 1200, h: 630, fit: 'crop' });
+const full = imageUrl(frame.asset?.ref, { w: 1800 });
+const alt = frame.alt || [title, frame.place].filter(Boolean).join(', ');
+const desc = [title, frame.place, year].filter(Boolean).join(' · ') + ' — a frame by Dillon Stadt.';
+const canonical = new URL('/frames/' + frame.slug, Astro.site).href;
+const ink = '#14131a';
+const cream = '#f3efe4';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title} — Dillon Stadt</title>
+<meta name="description" content={desc}>
+<link rel="canonical" href={canonical}>
+<meta property="og:type" content="article">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={desc}>
+<meta property="og:image" content={social}>
+<meta property="og:url" content={canonical}>
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #dcd7c8; color: #14131a; font-family: 'Space Mono', monospace; }
+  a { color: #14131a; }
+  a:hover { color: #57535e; }
+  img { display: block; max-width: 100%; }
+  @media (max-width: 760px) {
+    .split { flex-direction: column; }
+    .props { width: auto !important; border-left: none !important; border-top: 4px solid #14131a; }
+  }
+</style>
+</head>
+<body>
+<main style="max-width:1080px;margin:0 auto;padding:28px 20px 56px">
+
+  <a href="/" style="display:inline-flex;align-items:center;gap:8px;font-family:'Silkscreen',monospace;font-size:10px;letter-spacing:.08em;text-decoration:none;background:#f3efe4;border:3px solid #14131a;box-shadow:4px 4px 0 #14131a;padding:8px 12px;margin-bottom:20px">
+    ← BACK TO THE DESKTOP
+  </a>
+
+  <article style={`border:4px solid ${ink};background:${cream};box-shadow:12px 12px 0 ${ink}`}>
+
+    <header style={`display:flex;align-items:center;gap:10px;background:${accent};border-bottom:4px solid ${ink};padding:9px 12px`}>
+      <span style={`width:13px;height:13px;border:2px solid ${ink};background:${cream};flex:none`}></span>
+      <span style="font-family:'Silkscreen',monospace;font-size:11px;letter-spacing:.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        {(frame.genre?.code || 'IMG')} / {title.toUpperCase()}
+      </span>
+      <span style="margin-left:auto;font-family:'Silkscreen',monospace;font-size:10px;opacity:.75">{position} OF {total}</span>
+    </header>
+
+    <div class="split" style="display:flex;align-items:stretch">
+      <div style="flex:1;min-width:0;padding:16px">
+        <img
+          src={full}
+          alt={alt}
+          width={frame.asset?.w}
+          height={frame.asset?.h}
+          style={`border:3px solid ${ink};width:100%;height:auto;background-size:cover;background-position:center;${frame.asset?.lqip ? `background-image:url(${frame.asset.lqip})` : ''}`}
+        />
+        <h1 style="font-family:'Archivo Black',sans-serif;font-size:34px;line-height:1;text-transform:uppercase;letter-spacing:-.02em;margin:16px 0 0;text-wrap:pretty">{title}</h1>
+        {(frame.place || year) && (
+          <p style="font-family:'Instrument Serif',serif;font-size:20px;line-height:1.35;margin:8px 0 0;color:#57535e">
+            {[frame.place, year].filter(Boolean).join(' · ')}
+          </p>
+        )}
+      </div>
+
+      <aside class="props" style={`width:230px;flex:none;border-left:4px solid ${ink};background:#dcd7c8;padding:14px`}>
+        <div style="font-family:'Silkscreen',monospace;font-size:10px;margin-bottom:10px">PROPERTIES</div>
+        {rows.map(([k, v]) => (
+          <div style="display:flex;justify-content:space-between;gap:10px;font-size:11px;line-height:2;border-bottom:1px solid rgba(20,19,26,.18)">
+            <span style="color:#57535e;flex:none">{k}</span>
+            <span style="font-weight:700;text-align:right;overflow:hidden;text-overflow:ellipsis">{v}</span>
+          </div>
+        ))}
+      </aside>
+    </div>
+
+    <nav style={`display:flex;gap:10px;border-top:4px solid ${ink};padding:12px;font-family:'Silkscreen',monospace;font-size:10px;letter-spacing:.06em`}>
+      {prev ? (
+        <a href={`/frames/${prev.slug}`} style={`background:${cream};border:2px solid ${ink};padding:7px 10px;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%`}>← {prev.title}</a>
+      ) : <span></span>}
+      {next && (
+        <a href={`/frames/${next.slug}`} style={`background:${cream};border:2px solid ${ink};padding:7px 10px;text-decoration:none;margin-left:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%`}>{next.title} →</a>
+      )}
+    </nav>
+
+  </article>
+</main>
+</body>
+</html>

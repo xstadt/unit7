@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dillon Stadt — Photography</title>
+<meta name="description" content="Photographs by Dillon Stadt, filed by album and browsable as a desktop.">
+<link rel="canonical" href="https://dillonstadt.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dillon Stadt — Photography">
+<meta property="og:description" content="Photographs by Dillon Stadt, filed by album and browsable as a desktop.">
+<meta property="og:url" content="https://dillonstadt.com/">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#8f86d6;color:#14131a;font-family:'Space Mono',ui-monospace,monospace}
+html,body{cursor:url("cursors/arrow.png") 1 1, default !important}
+*{box-sizing:border-box;cursor:inherit !important}
+[style*="cursor:pointer"],[style*="cursor: pointer"]{cursor:url("cursors/hand.png") 9 1, pointer !important}
+[style*="cursor:pointer"]:active,[style*="cursor: pointer"]:active{cursor:url("cursors/hand-click.png") 8 10, pointer !important}
+[style*="cursor:grab"],[style*="cursor: grab"]{cursor:url("cursors/move.png") 15 15, move !important}
+[style*="cursor:zoom-in"],[style*="cursor: zoom-in"]{cursor:url("cursors/zoom-in.png") 13 13, zoom-in !important}
+[style*="cursor:zoom-out"],[style*="cursor: zoom-out"]{cursor:url("cursors/zoom-out.png") 13 13, zoom-out !important}
+[style*="cursor:wait"],[style*="cursor: wait"]{cursor:url("cursors/wait.png") 10 15, wait !important}
+[style*="cursor:nwse-resize"]{cursor:url("cursors/move.png") 15 15, nwse-resize !important}
+input{font-family:inherit}
+:focus{outline:none}
+:focus-visible{outline:3px solid #f2c94c;outline-offset:2px}
+a{color:#e77aa6}a:hover{color:#f2c94c}
+@keyframes dfGlitch{0%{clip-path:inset(0 0 0 0);transform:translate(0,0)}25%{clip-path:inset(14% 0 60% 0);transform:translate(-3px,0)}50%{clip-path:inset(56% 0 20% 0);transform:translate(4px,0)}75%{clip-path:inset(32% 0 46% 0);transform:translate(-2px,1px)}100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}}
+@keyframes dfShift{0%{background-position:0 0}100%{background-position:14px 14px}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#8f86d6"/><rect x="30" y="34" width="40" height="32" fill="#f4f1e8" stroke="#14131a" stroke-width="2.5"/><rect x="30" y="34" width="40" height="7" fill="#e77aa6" stroke="#14131a" stroke-width="2.5"/><circle cx="50" cy="55" r="7" fill="none" stroke="#14131a" stroke-width="2.5"/></svg></template>
+
+<div onPointerDown="{{ deskDown }}" style="position:fixed;inset:0;overflow:hidden;background-color:#8f86d6;background-image:radial-gradient(rgba(242,201,76,.5) 1.7px,transparent 1.8px);background-size:11px 11px;user-select:none">
+
+<div style="position:absolute;top:0;left:0;right:0;height:46px;z-index:9000;display:flex;justify-content:space-between;align-items:center;background:#f3efe4;border-bottom:4px solid #14131a;padding:0 14px">
+<div style="display:flex;align-items:center;gap:10px;min-width:0">
+<span style="width:22px;height:22px;background:#14131a;display:inline-block;flex:none"></span>
+<span style="font-family:'Archivo Black',sans-serif;font-size:17px;letter-spacing:-.02em;white-space:nowrap">{{ brand }}</span>
+<span style="font-family:'Silkscreen',monospace;font-size:10px;background:#8f86d6;border:2px solid #14131a;padding:3px 6px;white-space:nowrap">{{ tagline }}</span>
+</div>
+<div style="display:flex;gap:8px;align-items:center;font-family:'Silkscreen',monospace;font-size:10px">
+<span tabindex="0" role="button" aria-label="Open search" onClick="{{ openSearch }}" style="background:#f3efe4;border:2px solid #14131a;padding:4px 8px;cursor:pointer" style-hover="background:#14131a;color:#f3efe4">FIND</span>
+<sc-for list="{{ links }}" as="l" hint-placeholder-count="0">
+<a href="{{ l.url }}" target="_blank" rel="noreferrer" style="{{ l.style }}" style-hover="background:#14131a;color:#f3efe4">{{ l.label }}</a>
+</sc-for>
+</div>
+</div>
+
+<div role="list" aria-label="Genre folders" style="{{ iconGrid }}">
+<sc-for list="{{ icons }}" as="ic" hint-placeholder-count="10">
+<div onClick="{{ ic.open }}" onKeyDown="{{ ic.key }}" tabindex="0" role="listitem" aria-label="{{ ic.aria }}" style="{{ ic.box }}">
+<div style="{{ ic.tile }}">{{ ic.tag }}</div>
+<div style="{{ ic.label }}">{{ ic.name }}</div>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:20;width:min(460px,calc(100% - 44px));border:4px solid #14131a;background:#f3efe4;box-shadow:10px 10px 0 rgba(20,19,26,.45)">
+<div style="background:#f2c94c;border-bottom:4px solid #14131a;padding:7px 10px;font-family:'Silkscreen',monospace;font-size:10px;letter-spacing:.08em">{{ emptyTag }}</div>
+<div style="padding:18px 20px 20px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:23px;line-height:1.02;text-transform:uppercase;letter-spacing:-.02em">{{ emptyTitle }}</div>
+<p style="font-family:'Instrument Serif',serif;font-size:18px;line-height:1.42;margin:10px 0 0;text-wrap:pretty">{{ emptyBody }}</p>
+<div style="margin-top:14px;border-top:2px solid #14131a;padding-top:10px;font-family:'Silkscreen',monospace;font-size:10px;color:#57535e">SEARCH AND RECENTLY VIEWED STILL WORK</div>
+</div>
+</div>
+</sc-if>
+
+<sc-for list="{{ wins }}" as="w" hint-placeholder-count="3">
+<div onPointerDown="{{ w.focus }}" role="dialog" aria-label="{{ w.title }}" style="{{ w.frame }}">
+<div onPointerDown="{{ w.drag }}" onDoubleClick="{{ w.maximize }}" style="{{ w.bar }}">
+<span style="font-family:'Silkscreen',monospace;font-size:10px;white-space:nowrap;flex:none;overflow:hidden;text-overflow:ellipsis">{{ w.title }}</span>
+<span style="flex:1;height:12px;min-width:12px;background:repeating-linear-gradient(0deg,#14131a 0 2px,transparent 2px 4px)"></span>
+<div style="display:flex;gap:5px;flex:none">
+<span onClick="{{ w.minimize }}" onKeyDown="{{ w.minKey }}" tabindex="0" role="button" aria-label="Minimize" style="width:20px;height:20px;border:2px solid #14131a;background:#f3efe4;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px" style-hover="background:#f2c94c"><span style="width:10px;height:3px;background:#14131a;display:block"></span></span>
+<span onClick="{{ w.maximize }}" onKeyDown="{{ w.maxKey }}" tabindex="0" role="button" aria-label="Maximize" style="width:20px;height:20px;border:2px solid #14131a;background:#f3efe4;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#8fc9c2"><span style="width:11px;height:9px;border:2px solid #14131a;border-top-width:3px;display:block"></span></span>
+<span onClick="{{ w.close }}" onKeyDown="{{ w.closeKey }}" tabindex="0" role="button" aria-label="Close" style="width:20px;height:20px;border:2px solid #14131a;background:#f3efe4;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center" style-hover="background:#e77aa6"><span style="position:absolute;width:13px;height:2px;background:#14131a;transform:rotate(45deg)"></span><span style="position:absolute;width:13px;height:2px;background:#14131a;transform:rotate(-45deg)"></span></span>
+</div>
+</div>
+
+<div style="{{ w.bodyBox }}">
+
+<sc-if value="{{ w.isSheet }}" hint-placeholder-val="{{ true }}">
+<div style="padding:14px;background:#f3efe4">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+<sc-for list="{{ w.tiles }}" as="t" hint-placeholder-count="6">
+<div onClick="{{ t.open }}" onKeyDown="{{ t.key }}" tabindex="0" role="button" aria-label="{{ t.aria }}" style="position:relative;cursor:pointer;transition:transform .1s ease" style-hover="transform:translate(-2px,-2px)">
+<div style="{{ t.style }}">
+<div style="{{ t.screen }}"></div>
+<div style="position:absolute;bottom:6px;left:7px;font-size:8.5px;letter-spacing:.12em;color:rgba(243,239,228,.65);pointer-events:none">{{ t.label }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ w.isEmptySet }}" hint-placeholder-val="{{ false }}">
+<p style="font-family:'Instrument Serif',serif;font-size:18px;line-height:1.4;margin:2px 0 0;color:#57535e">{{ w.emptySet }}</p>
+</sc-if>
+<div style="display:flex;justify-content:space-between;align-items:center;border-top:3px solid #14131a;padding-top:10px;margin-top:12px;font-size:10.5px;letter-spacing:.1em">
+<span>{{ w.count }} FRAMES IN THIS SET</span>
+<span style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e">{{ w.status }}</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ w.isViewer }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;align-items:stretch;background:#f3efe4">
+<div style="flex:1;min-width:0;padding:14px">
+<div onClick="{{ w.toggleZoom }}" style="{{ w.plate }}">
+<div style="{{ w.plateInner }}"></div>
+<div style="{{ w.screen }}" style-hover="opacity:0;animation:dfGlitch .4s steps(2) 1"></div>
+<div style="position:absolute;bottom:10px;left:10px;font-size:9.5px;letter-spacing:.14em;color:rgba(243,239,228,.65);pointer-events:none">{{ w.plateLabel }}</div>
+</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
+<span onClick="{{ w.prev }}" onKeyDown="{{ w.prevKey }}" tabindex="0" role="button" aria-label="Previous frame" style="border:3px solid #14131a;background:#f3efe4;box-shadow:3px 3px 0 #14131a;padding:5px 11px;font-size:13px;font-weight:700;cursor:pointer" style-hover="background:#f2c94c">‹</span>
+<span onClick="{{ w.next }}" onKeyDown="{{ w.nextKey }}" tabindex="0" role="button" aria-label="Next frame" style="border:3px solid #14131a;background:#f3efe4;box-shadow:3px 3px 0 #14131a;padding:5px 11px;font-size:13px;font-weight:700;cursor:pointer" style-hover="background:#f2c94c">›</span>
+<span style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e">{{ w.counter }}</span>
+<span style="flex:1"></span>
+<span onClick="{{ w.toggleZoom }}" onKeyDown="{{ w.zoomKey }}" tabindex="0" role="button" aria-label="Toggle 100 percent zoom" style="{{ w.zoomBtn }}">{{ w.zoomLabel }}</span>
+<span onClick="{{ w.toggleExif }}" onKeyDown="{{ w.exifKey }}" tabindex="0" role="button" aria-label="Toggle properties panel" style="{{ w.exifBtn }}">PROPERTIES</span>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px">
+<div style="min-width:0">
+<div style="font-family:'Archivo Black',sans-serif;font-size:19px;text-transform:uppercase;letter-spacing:-.01em">{{ w.frameTitle }}</div>
+<div style="font-size:10.5px;color:#57535e;margin-top:3px">{{ w.exif }}</div>
+</div>
+<span style="{{ w.tag }}">{{ w.code }}</span>
+</div>
+</div>
+<sc-if value="{{ w.exifOpen }}" hint-placeholder-val="{{ false }}">
+<div style="width:196px;flex:none;border-left:4px solid #14131a;background:#dcd7c8;padding:12px">
+<div style="font-family:'Silkscreen',monospace;font-size:10px;margin-bottom:10px">PROPERTIES</div>
+<sc-for list="{{ w.exifRows }}" as="r" hint-placeholder-count="8">
+<div style="display:flex;justify-content:space-between;gap:8px;font-size:10.5px;line-height:1.9;border-bottom:1px solid rgba(20,19,26,.18)">
+<span style="color:#57535e">{{ r.k }}</span><span style="font-weight:700">{{ r.v }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ w.isSearch }}" hint-placeholder-val="{{ true }}">
+<div style="padding:14px;background:#f3efe4">
+<input value="{{ w.query }}" onChange="{{ w.onQuery }}" aria-label="Search frames" placeholder="title, place, focal length, year…" style="width:100%;border:3px solid #14131a;background:#f3efe4;padding:10px 12px;font-size:13px;box-shadow:inset 3px 3px 0 rgba(20,19,26,.14)" />
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin:12px 0 8px">{{ w.resultCount }}</div>
+<div style="display:grid;gap:6px">
+<sc-for list="{{ w.results }}" as="r" hint-placeholder-count="6">
+<div onClick="{{ r.open }}" onKeyDown="{{ r.key }}" tabindex="0" role="button" aria-label="{{ r.aria }}" style="display:flex;align-items:center;gap:10px;border:3px solid #14131a;background:#f3efe4;padding:8px 10px;cursor:pointer;font-size:11.5px" style-hover="background:#14131a;color:#f3efe4">
+<span style="{{ r.chip }}"></span>
+<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span>
+<span style="font-family:'Silkscreen',monospace;font-size:9.5px;opacity:.75;white-space:nowrap">{{ r.meta }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ w.isRecent }}" hint-placeholder-val="{{ true }}">
+<div style="padding:14px;background:#f3efe4">
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:10px">{{ w.resultCount }}</div>
+<div style="display:grid;gap:6px">
+<sc-for list="{{ w.results }}" as="r" hint-placeholder-count="4">
+<div onClick="{{ r.open }}" onKeyDown="{{ r.key }}" tabindex="0" role="button" aria-label="{{ r.aria }}" style="display:flex;align-items:center;gap:10px;border:3px solid #14131a;background:#f3efe4;padding:8px 10px;cursor:pointer;font-size:11.5px" style-hover="background:#14131a;color:#f3efe4">
+<span style="{{ r.chip }}"></span>
+<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span>
+<span style="font-family:'Silkscreen',monospace;font-size:9.5px;opacity:.75;white-space:nowrap">{{ r.meta }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ w.isAlert }}" hint-placeholder-val="{{ false }}">
+<div style="padding:18px 20px 20px;background:#f3efe4;display:flex;gap:14px;align-items:flex-start">
+<span style="width:34px;height:34px;flex:none;border:3px solid #14131a;background:#e77aa6;display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:18px">!</span>
+<div style="min-width:0">
+<div style="font-family:'Archivo Black',sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:-.01em">{{ w.alertTitle }}</div>
+<p style="font-size:11.5px;line-height:1.65;margin:8px 0 14px;color:#3d3947;word-break:break-word">{{ w.message }}</p>
+<div onClick="{{ w.close }}" onKeyDown="{{ w.closeKey }}" tabindex="0" role="button" style="display:inline-block;background:#f2c94c;border:3px solid #14131a;box-shadow:4px 4px 0 #14131a;padding:8px 16px;font-size:11px;font-weight:700;letter-spacing:.1em;cursor:pointer" style-hover="transform:translate(4px,4px);box-shadow:0 0 0 #14131a">DISMISS</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ w.isNote }}" hint-placeholder-val="{{ true }}">
+<div style="padding:20px 22px 24px;background:#f2c94c">
+<div style="font-family:'Archivo Black',sans-serif;font-size:26px;line-height:.98;text-transform:uppercase;letter-spacing:-.02em">{{ w.noteTitle }}</div>
+<div style="font-size:10.5px;letter-spacing:.1em;margin-top:8px;color:#5d4f1f">{{ w.noteMeta }}</div>
+<sc-for list="{{ w.paras }}" as="p" hint-placeholder-count="2">
+<p style="font-family:'Instrument Serif',serif;font-size:19px;line-height:1.4;margin:14px 0 0;text-wrap:pretty">{{ p.text }}</p>
+</sc-for>
+<sc-if value="{{ w.hasMoreNotes }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ w.nextNote }}" onKeyDown="{{ w.nextNoteKey }}" tabindex="0" role="button" style="margin-top:16px;border-top:2px solid #14131a;padding-top:10px;font-size:11px;letter-spacing:.1em;cursor:pointer">NEXT NOTE →</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ w.isContact }}" hint-placeholder-val="{{ true }}">
+<div style="padding:20px 22px 24px;background:#8fc9c2">
+<div style="font-family:'Archivo Black',sans-serif;font-size:24px;text-transform:uppercase;letter-spacing:-.02em">Get in touch</div>
+<p style="font-family:'Instrument Serif',serif;font-size:18px;line-height:1.4;margin:12px 0 16px;text-wrap:pretty">{{ w.contactBlurb }}</p>
+<div style="display:grid;gap:10px;font-size:12px">
+<sc-for list="{{ w.contactRows }}" as="c" hint-placeholder-count="2">
+<div style="background:#f3efe4;border:3px solid #14131a;padding:10px 12px;overflow:hidden;text-overflow:ellipsis">{{ c.label }}</div>
+</sc-for>
+<sc-if value="{{ w.canMail }}" hint-placeholder-val="{{ true }}">
+<a href="{{ w.mailto }}" style="background:#f2c94c;border:3px solid #14131a;box-shadow:5px 5px 0 #14131a;padding:11px 12px;text-align:center;font-weight:700;letter-spacing:.1em;cursor:pointer;color:#14131a;text-decoration:none" style-hover="transform:translate(5px,5px);box-shadow:0 0 0 #14131a">SEND A MESSAGE</a>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ w.canResize }}" hint-placeholder-val="{{ false }}">
+<div onPointerDown="{{ w.resize }}" role="button" aria-label="Resize window" style="position:absolute;right:0;bottom:0;width:20px;height:20px;cursor:nwse-resize;background:repeating-linear-gradient(135deg,#14131a 0 2px,transparent 2px 5px);touch-action:none"></div>
+</sc-if>
+</div>
+</sc-for>
+
+<sc-if value="{{ startOpen }}" hint-placeholder-val="{{ false }}">
+<div role="menu" aria-label="Start menu" style="{{ startMenu }}">
+<div style="width:38px;flex:none;background:#14131a;display:flex;align-items:flex-end;justify-content:center;padding:0 0 16px">
+<span style="writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Archivo Black',sans-serif;font-size:16px;letter-spacing:-.01em;color:#f3efe4">{{ brand }}</span>
+</div>
+<div style="flex:1;padding:6px;min-width:0">
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;padding:6px 10px 8px">GALLERIES</div>
+<sc-if value="{{ noGalleries }}" hint-placeholder-val="{{ false }}">
+<div style="padding:2px 10px 8px;font-size:12px;color:#57535e">None in Sanity yet</div>
+</sc-if>
+<sc-for list="{{ menu }}" as="m" hint-placeholder-count="7">
+<div onClick="{{ m.open }}" onKeyDown="{{ m.key }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px;letter-spacing:.02em" style-hover="background:#14131a;color:#f3efe4">
+<span style="{{ m.chip }}"></span>{{ m.name }}
+</div>
+</sc-for>
+<div style="height:3px;background:#14131a;margin:8px 6px"></div>
+<div onClick="{{ openSearch }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px" style-hover="background:#14131a;color:#f3efe4">
+<span style="width:16px;height:16px;background:#f2c94c;border:2px solid #14131a;flex:none"></span>Search &nbsp;<span style="font-size:10px;opacity:.6">⌘F</span>
+</div>
+<div onClick="{{ openRecent }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px" style-hover="background:#14131a;color:#f3efe4">
+<span style="width:16px;height:16px;background:#a99ce0;border:2px solid #14131a;flex:none"></span>Recently viewed
+</div>
+<sc-if value="{{ hasNotes }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ openNotes }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px" style-hover="background:#14131a;color:#f3efe4">
+<span style="width:16px;height:16px;background:#f3efe4;border:2px solid #14131a;flex:none"></span>Field Notes
+</div>
+</sc-if>
+<sc-if value="{{ hasContact }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ openContact }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px" style-hover="background:#14131a;color:#f3efe4">
+<span style="width:16px;height:16px;background:#8fc9c2;border:2px solid #14131a;flex:none"></span>Contact
+</div>
+<div style="height:3px;background:#14131a;margin:8px 6px"></div>
+<div onClick="{{ closeAll }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px 9px;cursor:pointer;font-size:12.5px;font-weight:700" style-hover="background:#e77aa6">
+<span style="width:16px;height:16px;background:#e77aa6;border:2px solid #14131a;flex:none"></span>Close all windows
+</div>
+</div>
+</div>
+</sc-if>
+
+<div role="toolbar" aria-label="Taskbar" style="position:absolute;left:0;right:0;bottom:0;height:44px;z-index:9500;display:flex;align-items:center;gap:6px;background:#f3efe4;border-top:4px solid #14131a;padding:4px 6px">
+<div onClick="{{ toggleStart }}" onKeyDown="{{ startKey }}" tabindex="0" role="button" aria-label="Start menu" style="{{ startBtn }}">
+<span style="width:16px;height:16px;background:#e77aa6;border:2px solid #14131a;display:inline-block"></span>Start
+</div>
+<div style="width:3px;height:26px;background:#14131a;flex:none"></div>
+<div style="display:flex;gap:5px;flex:1;overflow:hidden">
+<sc-for list="{{ taskbar }}" as="t" hint-placeholder-count="3">
+<div onClick="{{ t.click }}" onKeyDown="{{ t.key }}" tabindex="0" role="button" aria-label="{{ t.aria }}" style="{{ t.style }}"><span style="{{ t.chip }}"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.title }}</span></div>
+</sc-for>
+</div>
+<div aria-label="Clock" style="display:flex;align-items:center;gap:8px;border:3px solid #14131a;background:#14131a;color:#f3efe4;padding:5px 10px;flex:none;font-family:'Silkscreen',monospace;font-size:11px">
+<span style="width:9px;height:9px;background:#f2c94c;display:inline-block"></span>{{ clock }}
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.genres = [];
+    this.catalog = [];
+    this.notes = [];
+    this.settings = null;
+    this.state = {
+      z: 30, startOpen: false, now: this.time(), iconIdx: -1,
+      narrow: typeof window !== 'undefined' && window.innerWidth < 820,
+      recent: [], source: 'loading', loadError: '', noteIdx: 0,
+      wins: []
+    };
+    this.pointer = null;
+    this.timers = {};
+  }
+
+  genre(id) {
+    return this.genres.find(g => g.id === id) || this.genres[0] ||
+      { id: '', name: '', code: '···', color: '#dcd7c8', count: 0 };
+  }
+  framesOf(g) { return this.catalog.filter(f => f.genre === g); }
+  tools() {
+    const list = [];
+    if (this.notes.length) list.push({ kind: 'note', name: 'Notes', color: '#f3efe4', accent: '#f2c94c', aria: 'Open field notes', dark: false });
+    if (this.settings) list.push({ kind: 'contact', name: 'Contact', color: '#14131a', accent: '#8fc9c2', title: 'CONTACT', aria: 'Open contact', dark: true });
+    list.push({ kind: 'search', name: 'Search', color: '#f2c94c', accent: '#f2c94c', title: 'SEARCH', aria: 'Open search', dark: false });
+    list.push({ kind: 'recent', name: 'Recent', color: '#a99ce0', accent: '#a99ce0', title: 'RECENTLY VIEWED', aria: 'Open recently viewed', dark: false });
+    return list;
+  }
+  noteTitle(i) {
+    const n = this.notes[i || 0];
+    return n && n.title ? n.title.toUpperCase() : 'FIELD NOTES';
+  }
+  valid(w) {
+    if (w.kind === 'sheet') return this.genres.some(g => g.id === w.genre);
+    if (w.kind === 'viewer') return this.framesOf(w.genre).length > 0;
+    if (w.kind === 'note') return this.notes.length > 0;
+    if (w.kind === 'contact') return !!this.settings;
+    return w.kind === 'search' || w.kind === 'recent';
+  }
+  time() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  area() {
+    const W = typeof window !== 'undefined' ? window.innerWidth : 1440;
+    const H = typeof window !== 'undefined' ? window.innerHeight : 900;
+    return { W, H, top: 54, bottom: 52 };
+  }
+
+  componentDidMount() {
+    this.tick = setInterval(() => this.setState({ now: this.time() }), 20000);
+    this.onMove = e => {
+      if (!this.pointer) return;
+      const p = this.pointer;
+      const a = this.area();
+      if (p.mode === 'drag') {
+        const x = Math.max(-40, Math.min(a.W - 100, e.clientX - p.dx));
+        const y = Math.max(a.top, Math.min(a.H - a.bottom - 20, e.clientY - p.dy));
+        this.patch(p.id, { x, y });
+      } else {
+        const w = Math.max(300, Math.min(a.W - 20, p.w0 + (e.clientX - p.sx)));
+        const h = Math.max(200, Math.min(a.H - a.top - a.bottom, p.h0 + (e.clientY - p.sy)));
+        this.patch(p.id, { w, h });
+      }
+    };
+    this.onUp = () => { if (this.pointer) { this.pointer = null; this.persist(); } };
+    this.onResize = () => this.setState({ narrow: window.innerWidth < 820 });
+    this.onKey = e => this.handleKey(e);
+    window.addEventListener('pointermove', this.onMove);
+    window.addEventListener('pointerup', this.onUp);
+    window.addEventListener('pointercancel', this.onUp);
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('keydown', this.onKey);
+    this.loadRemote();
+  }
+  componentWillUnmount() {
+    clearInterval(this.tick);
+    Object.values(this.timers).forEach(clearTimeout);
+    window.removeEventListener('pointermove', this.onMove);
+    window.removeEventListener('pointerup', this.onUp);
+    window.removeEventListener('pointercancel', this.onUp);
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('keydown', this.onKey);
+  }
+
+  patch(id, props) {
+    this.setState(s => ({ wins: s.wins.map(w => (w.id === id ? Object.assign({}, w, props) : w)) }), () => {
+      clearTimeout(this.timers.persist);
+      this.timers.persist = setTimeout(() => this.persist(), 150);
+    });
+  }
+  tokenOf(w) {
+    if (w.kind === 'sheet') return w.genre;
+    if (w.kind === 'viewer') return 'view:' + w.genre + ':' + w.idx;
+    return w.kind;
+  }
+  persist() {
+    try {
+      const live = this.state.wins.filter(w => w.kind !== 'alert');
+      const wins = live.map(w => ({ id: w.id, kind: w.kind, title: w.title, accent: w.accent, x: w.x, y: w.y, w: w.w, h: w.h, z: w.z, min: w.min, genre: w.genre, idx: w.idx, exifOpen: w.exifOpen, zoom: w.zoom, query: w.query }));
+      localStorage.setItem('dstadt-desk-v1', JSON.stringify({ wins, z: this.state.z, recent: this.state.recent }));
+      const tokens = live.map(w => this.tokenOf(w)).join(',');
+      const url = new URL(window.location.href);
+      if (tokens) url.searchParams.set('open', tokens); else url.searchParams.delete('open');
+      history.replaceState(null, '', url.toString());
+    } catch (err) { /* storage unavailable */ }
+  }
+  restore() {
+    let handled = false;
+    try {
+      const raw = localStorage.getItem('dstadt-desk-v1');
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved && Array.isArray(saved.wins)) {
+          this.setState({ wins: saved.wins.filter(w => this.valid(w)), z: saved.z || 30, recent: (saved.recent || []).filter(id => this.catalog.some(f => f.id === id)) });
+          handled = true;
+        }
+      }
+      const tokens = new URL(window.location.href).searchParams.get('open');
+      if (tokens !== null) { this.openTokens(tokens.split(',').filter(Boolean)); handled = true; }
+    } catch (err) { /* ignore */ }
+    if (!handled) this.persist();
+  }
+  openTokens(tokens) {
+    const wins = [];
+    let z = 30;
+    const a = this.area();
+    tokens.forEach((t, i) => {
+      z++;
+      const x = 120 + (i % 4) * 42, y = a.top + 30 + (i % 3) * 34;
+      if (t.indexOf('view:') === 0) {
+        const parts = t.split(':');
+        if (!this.framesOf(parts[1]).length) return;
+        wins.push({ id: 'viewer', kind: 'viewer', title: 'NOW VIEWING', accent: '#f3efe4', x: x + 260, y, w: 560, z, genre: parts[1], idx: parseInt(parts[2], 10) || 0 });
+      } else if (this.genres.some(g => g.id === t)) {
+        const g = this.genre(t);
+        wins.push({ id: 'set-' + t, kind: 'sheet', title: g.name.toUpperCase() + ' / ' + g.count, accent: g.color, x, y, w: 430, z, genre: t });
+      } else if (t === 'note' && this.notes.length) wins.push({ id: 'note', kind: 'note', title: this.noteTitle(0), accent: '#f2c94c', x, y, w: 440, z });
+      else if (t === 'contact' && this.settings) wins.push({ id: 'contact', kind: 'contact', title: 'CONTACT', accent: '#8fc9c2', x, y, w: 400, z });
+      else if (t === 'search') wins.push({ id: 'search', kind: 'search', title: 'SEARCH', accent: '#f2c94c', x, y, w: 440, z, query: '' });
+      else if (t === 'recent') wins.push({ id: 'recent', kind: 'recent', title: 'RECENTLY VIEWED', accent: '#a99ce0', x, y, w: 420, z });
+    });
+    this.setState({ wins, z });
+  }
+
+  raise(id) {
+    if (id !== 'search') this.wantSearchFocus = false;
+    this.setState(s => ({ z: s.z + 1, startOpen: false, wins: s.wins.map(w => (w.id === id ? Object.assign({}, w, { z: s.z + 1, min: false }) : w)) }), () => this.persist());
+  }
+  minimize(id) { this.setState(s => ({ wins: s.wins.map(w => (w.id === id ? Object.assign({}, w, { min: true }) : w)) }), () => this.persist()); }
+  close(id) { this.setState(s => ({ wins: s.wins.filter(w => w.id !== id) }), () => this.persist()); }
+  topWin() {
+    const open = this.state.wins.filter(w => !w.min);
+    if (!open.length) return null;
+    return open.reduce((a, b) => (b.z > a.z ? b : a));
+  }
+  maximize(id) {
+    const a = this.area();
+    this.setState(s => ({
+      wins: s.wins.map(w => {
+        if (w.id !== id) return w;
+        if (w.prev) return Object.assign({}, w, w.prev, { prev: null });
+        return Object.assign({}, w, { prev: { x: w.x, y: w.y, w: w.w, h: w.h }, x: 8, y: a.top, w: a.W - 16, h: a.H - a.top - a.bottom });
+      })
+    }), () => this.persist());
+  }
+  startDrag(w, e) {
+    if (this.state.narrow) return;
+    e.preventDefault();
+    this.raise(w.id);
+    if (w.prev) {
+      const nw = w.prev.w || 440;
+      this.patch(w.id, Object.assign({}, w.prev, { prev: null, x: Math.max(8, e.clientX - nw / 2), y: Math.max(this.area().top, e.clientY - 14) }));
+      this.pointer = { mode: 'drag', id: w.id, dx: nw / 2, dy: 14 };
+      return;
+    }
+    this.pointer = { mode: 'drag', id: w.id, dx: e.clientX - w.x, dy: e.clientY - w.y };
+  }
+  startResize(w, e) {
+    e.preventDefault(); e.stopPropagation();
+    this.raise(w.id);
+    const el = e.currentTarget && e.currentTarget.parentNode;
+    this.pointer = { mode: 'resize', id: w.id, sx: e.clientX, sy: e.clientY, w0: w.w, h0: w.h || (el ? el.offsetHeight : 400) };
+  }
+  load(id, ms) {
+    this.patch(id, { loading: true });
+    clearTimeout(this.timers[id]);
+    this.timers[id] = setTimeout(() => this.patch(id, { loading: false }), ms || 420);
+  }
+  spawn(win) {
+    const a = this.area();
+    this.setState(s => {
+      const n = s.wins.length;
+      const z = s.z + 1;
+      const x = Math.min(a.W - 260, 110 + (n % 5) * 38);
+      const y = Math.min(a.H - a.bottom - 120, a.top + 24 + (n % 4) * 34);
+      const loads = win.kind === 'sheet' || win.kind === 'viewer';
+      return { z, startOpen: false, wins: s.wins.concat([Object.assign({ x, y, z, loading: loads }, win)]) };
+    }, () => { if (win.kind === 'sheet' || win.kind === 'viewer') this.load(win.id); this.persist(); });
+  }
+  openGenre(g) {
+    const id = 'set-' + g.id;
+    if (this.state.wins.some(w => w.id === id)) { this.raise(id); this.load(id); return; }
+    this.spawn({ id, kind: 'sheet', title: g.name.toUpperCase() + ' / ' + g.count, accent: g.color, w: 430, genre: g.id });
+  }
+  openPanel(kind, title, accent, extra) {
+    if (this.state.wins.some(w => w.id === kind)) { this.raise(kind); if (kind === 'search') this.focusSearch(); return; }
+    this.spawn(Object.assign({ id: kind, kind, title, accent, w: kind === 'note' ? 440 : 420 }, extra || {}));
+    if (kind === 'search') this.focusSearch();
+  }
+  focusSearch() {
+    this.wantSearchFocus = true;
+    this.applySearchFocus();
+  }
+  applySearchFocus() {
+    if (!this.wantSearchFocus) return;
+    const win = this.state.wins.find(w => w.kind === 'search' && !w.min);
+    if (!win) { this.wantSearchFocus = false; return; }
+    const el = document.querySelector('input[aria-label="Search frames"]');
+    if (el && document.activeElement !== el) { el.focus(); el.select(); }
+  }
+  componentDidUpdate() { this.applySearchFocus(); }
+  openFrame(f) {
+    const recent = [f.id].concat(this.state.recent.filter(r => r !== f.id)).slice(0, 12);
+    this.setState({ recent });
+    if (this.state.wins.some(w => w.id === 'viewer')) {
+      this.patch('viewer', { genre: f.genre, idx: f.idx, zoom: false, min: false });
+      this.raise('viewer');
+      this.load('viewer', 380);
+      return;
+    }
+    this.spawn({ id: 'viewer', kind: 'viewer', title: 'NOW VIEWING', accent: '#f3efe4', w: 560, genre: f.genre, idx: f.idx });
+  }
+  step(w, d) {
+    const list = this.framesOf(w.genre);
+    if (!list.length) return;
+    const idx = (w.idx + d + list.length) % list.length;
+    this.patch(w.id, { idx, zoom: false });
+    const f = list[idx];
+    this.setState(s => ({ recent: [f.id].concat(s.recent.filter(r => r !== f.id)).slice(0, 12) }));
+    this.load(w.id, 320);
+  }
+  handleKey(e) {
+    const tag = (e.target && e.target.tagName) || '';
+    const typing = tag === 'INPUT' || tag === 'TEXTAREA';
+    const mod = e.metaKey || e.ctrlKey;
+    if (mod && e.key.toLowerCase() === 'f') { e.preventDefault(); this.openPanel('search', 'SEARCH', '#f2c94c', { query: '' }); return; }
+    if (typing) { if (e.key === 'Escape') e.target.blur(); return; }
+    const top = this.topWin();
+    if (mod && e.key.toLowerCase() === 'w') { e.preventDefault(); if (top) this.close(top.id); return; }
+    if (e.key === 'Escape') { if (this.state.startOpen) this.setState({ startOpen: false }); else if (top) this.close(top.id); return; }
+    if (e.altKey && e.key === 'Tab') {
+      e.preventDefault();
+      const open = this.state.wins.filter(w => !w.min);
+      if (open.length > 1) { const bottom = open.reduce((a, b) => (b.z < a.z ? b : a)); this.raise(bottom.id); }
+      return;
+    }
+    if (top && top.kind === 'viewer' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+      e.preventDefault(); this.step(top, e.key === 'ArrowRight' ? 1 : -1); return;
+    }
+    if (e.key.indexOf('Arrow') === 0) {
+      e.preventDefault();
+      const items = this.genres.length + this.tools().length;
+      const cols = 3;
+      let i = this.state.iconIdx < 0 ? 0 : this.state.iconIdx;
+      if (this.state.iconIdx >= 0) {
+        if (e.key === 'ArrowRight') i++;
+        else if (e.key === 'ArrowLeft') i--;
+        else if (e.key === 'ArrowDown') i += cols;
+        else i -= cols;
+      }
+      this.setState({ iconIdx: Math.max(0, Math.min(items - 1, i)) });
+      return;
+    }
+    if ((e.key === 'Enter' || e.key === ' ') && this.state.iconIdx >= 0 && !typing) {
+      e.preventDefault(); this.activateIcon(this.state.iconIdx);
+    }
+  }
+  activateIcon(i) {
+    if (i < this.genres.length) return this.openGenre(this.genres[i]);
+    const t = this.tools()[i - this.genres.length];
+    if (!t) return;
+    if (t.kind === 'note') return this.openPanel('note', this.noteTitle(this.state.noteIdx), '#f2c94c');
+    return this.openPanel(t.kind, t.title, t.accent, t.kind === 'search' ? { query: '' } : null);
+  }
+  keyActivate(fn) {
+    return e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); fn(e); } };
+  }
+  async loadRemote() {
+    let err = null;
+    try {
+      const mod = await import('./content/sanity.js');
+      if (mod.isConfigured()) {
+        const data = await mod.fetchCatalog();
+        this.genres = (data && data.genres) || [];
+        this.catalog = (data && data.frames) || [];
+        this.notes = (data && data.notes) || [];
+        this.settings = (data && data.settings) || null;
+      }
+    } catch (e) {
+      err = e;
+      console.warn('[desk] Sanity unavailable:', e && e.message);
+    }
+    this.setState({
+      source: err ? 'error' : (this.genres.length || this.catalog.length ? 'sanity' : 'empty'),
+      loadError: err ? (err.message || 'Request failed') : ''
+    }, () => this.restore());
+  }
+  imgBg(f, size, seed) {
+    const url = f && f.image ? (size === 'full' ? f.image.full : f.image.thumb) : '';
+    if (url) return "background-image:url('" + url + "');background-size:cover;background-position:center";
+    return 'background-image:' + this.plateBg(seed);
+  }
+  lqipBg(f) {
+    const l = f && f.image && f.image.lqip;
+    return l ? "background-image:url('" + l + "');background-size:cover;background-position:center;filter:blur(1px)" : '';
+  }
+  plateBg(seed) {
+    const hues = [
+      'radial-gradient(ellipse at 35% 45%,rgba(231,122,166,.5),transparent 60%)',
+      'radial-gradient(ellipse at 62% 55%,rgba(242,201,76,.42),transparent 58%)',
+      'radial-gradient(ellipse at 40% 62%,rgba(169,156,224,.5),transparent 60%)',
+      'radial-gradient(ellipse at 58% 38%,rgba(143,201,194,.45),transparent 58%)',
+      'radial-gradient(ellipse at 45% 50%,rgba(233,168,210,.45),transparent 60%)',
+      'radial-gradient(ellipse at 30% 40%,rgba(143,134,214,.5),transparent 58%)'
+    ];
+    return hues[Math.abs(seed) % hues.length] + ',repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 8px,rgba(255,255,255,0) 8px 16px)';
+  }
+  dither(color) {
+    return 'position:absolute;inset:0;background-color:#241f2e;background-image:radial-gradient(' + color + ' 1.4px,transparent 1.5px);background-size:5px 5px;animation:dfShift 1.6s linear infinite;cursor:wait';
+  }
+  exifRows(f, g) {
+    const dash = v => (v === 0 || v ? String(v) : '—');
+    return [
+      { k: 'Genre', v: dash(g.name) },
+      { k: 'Place', v: dash(f.place) },
+      { k: 'Year', v: dash(f.year) },
+      { k: 'Focal', v: f.focal ? f.focal + 'mm' : '—' },
+      { k: 'Aperture', v: f.ap ? 'f/' + f.ap : '—' },
+      { k: 'Exposure', v: dash(f.shutter) },
+      { k: 'ISO', v: dash(f.iso) },
+      { k: 'File', v: (g.code || 'IMG') + '-' + String((f.idx || 0) + 1).padStart(3, '0') },
+      { k: 'Size', v: f.image && f.image.w ? f.image.w + ' × ' + f.image.h : '—' }
+    ];
+  }
+
+  renderVals() {
+    const st = this.state;
+    const a = this.area();
+    const narrow = st.narrow;
+    const dot = c => 'position:absolute;inset:0;background-color:rgba(20,19,26,.48);background-image:radial-gradient(' + c + ' 1.5px,transparent 1.6px);background-size:7px 7px;transition:opacity .25s ease;cursor:pointer';
+    const toolTag = { note: 'NTS', contact: 'MSG', search: 'FND', recent: 'RCT' };
+    const iconEntries = this.genres.map(g => ({ name: g.name, color: g.color, tag: (g.code || g.name.slice(0, 3)).toUpperCase(), aria: 'Open ' + g.name + ' gallery, ' + g.count + ' frames', dark: false }))
+      .concat(this.tools().map(t => ({ name: t.name, color: t.color, tag: toolTag[t.kind] || t.name.slice(0, 3).toUpperCase(), aria: t.aria, dark: t.dark })));
+
+    const gapY = narrow ? 14 : 22, gapX = narrow ? 10 : 16, cellW = narrow ? 92 : 116;
+    const maxCols = Math.max(2, Math.floor((a.W - 24 + gapX) / (cellW + gapX)));
+    const availH = a.H - 64 - a.bottom - 8;
+    let tileH = narrow ? 62 : 84, cols = 3;
+    const steps = [narrow ? 62 : 84, 62, 48, 38];
+    for (let i = 0; i < steps.length; i++) {
+      const th = steps[i];
+      const rows = Math.max(1, Math.floor(availH / (th + 34 + gapY)));
+      const need = Math.ceil(iconEntries.length / rows);
+      tileH = th;
+      cols = Math.max(3, Math.min(maxCols, need));
+      if (need <= maxCols) break;
+    }
+    const icons = iconEntries.map((it, i) => ({
+      name: it.name,
+      tag: it.tag,
+      aria: it.aria,
+      open: () => { this.setState({ iconIdx: i }); this.activateIcon(i); },
+      key: this.keyActivate(() => this.activateIcon(i)),
+      box: 'text-align:center;cursor:pointer;padding:4px;transition:transform .1s ease;' + (st.iconIdx === i ? 'outline:3px solid #f2c94c;outline-offset:-1px;background:rgba(20,19,26,.18)' : ''),
+      tile: 'height:' + tileH + 'px;border:3px solid #14131a;background-color:' + it.color + ';' +
+        (it.dark ? 'background-image:radial-gradient(rgba(143,134,214,.9) 1.4px,transparent 1.5px);background-size:7px 7px;color:rgba(243,239,228,.6);' : 'background-image:repeating-linear-gradient(135deg,rgba(20,19,26,.18) 0 6px,transparent 6px 12px);color:rgba(20,19,26,.7);') +
+        'display:flex;align-items:center;justify-content:center;font-family:Silkscreen,monospace;font-size:11px;letter-spacing:.08em',
+      label: 'display:inline-block;margin-top:8px;font-family:Silkscreen,monospace;font-size:' + (narrow ? 10 : 11) + 'px;background:#f3efe4;color:#14131a;border:2px solid #14131a;padding:3px 7px'
+    }));
+
+    const top = this.topWin();
+    const wins = st.wins.map(w => {
+      const g = this.genre(w.genre || 'aut');
+      const base = {
+        id: w.id, title: w.title,
+        frame: narrow
+          ? 'position:absolute;left:0;right:0;top:' + a.top + 'px;bottom:' + a.bottom + 'px;z-index:' + w.z + ';border:4px solid #14131a;background:#f3efe4;display:flex;flex-direction:column;overflow:hidden' + (w.min ? ';display:none' : '')
+          : 'position:absolute;left:' + w.x + 'px;top:' + w.y + 'px;width:' + w.w + 'px;' + (w.h ? 'height:' + Math.max(200, Math.min(w.h, a.H - a.bottom - w.y)) + 'px;' : '') + 'max-height:' + Math.max(200, a.H - a.bottom - w.y) + 'px;z-index:' + w.z + ';border:4px solid #14131a;background:#f3efe4;box-shadow:10px 10px 0 rgba(20,19,26,.45);display:flex;flex-direction:column;overflow:hidden' + (w.min ? ';display:none' : ''),
+        bar: 'display:flex;align-items:center;gap:8px;border-bottom:4px solid #14131a;padding:6px 8px;flex:none;touch-action:none;' + (narrow ? '' : 'cursor:grab;') + 'background:' + w.accent,
+        bodyBox: 'flex:1;min-height:0;overflow:auto;' + (w.loading ? 'cursor:wait' : ''),
+        canResize: !narrow,
+        grip: '',
+        focus: () => this.raise(w.id),
+        drag: e => this.startDrag(w, e),
+        resize: e => this.startResize(w, e),
+        close: e => { e.stopPropagation(); this.close(w.id); },
+        closeKey: this.keyActivate(() => this.close(w.id)),
+        minimize: e => { e.stopPropagation(); this.minimize(w.id); },
+        minKey: this.keyActivate(() => this.minimize(w.id)),
+        maximize: e => { e.stopPropagation(); this.maximize(w.id); },
+        maxKey: this.keyActivate(() => this.maximize(w.id)),
+        isSheet: w.kind === 'sheet', isViewer: w.kind === 'viewer', isNote: w.kind === 'note',
+        isContact: w.kind === 'contact', isSearch: w.kind === 'search', isRecent: w.kind === 'recent',
+        isAlert: w.kind === 'alert', alertTitle: w.alertTitle || '', message: w.message || ''
+      };
+
+      if (w.kind === 'sheet') {
+        const list = this.framesOf(g.id);
+        base.count = list.length;
+        base.isEmptySet = list.length === 0 && !w.loading;
+        base.emptySet = 'This album has no frames in Sanity yet.';
+        base.status = w.loading ? 'LOADING…' : (list.length ? 'CLICK A FRAME' : 'EMPTY');
+        base.tiles = list.map((f, i) => ({
+          open: () => this.openFrame(f),
+          key: this.keyActivate(() => this.openFrame(f)),
+          aria: 'Open ' + f.title,
+          style: 'position:relative;height:104px;border:3px solid #14131a;overflow:hidden;background-color:#191722;' + (w.loading ? (this.lqipBg(f) || 'background-image:' + this.plateBg(i + list.length)) : this.imgBg(f, 'thumb', i + list.length)),
+          screen: w.loading ? this.dither(g.color) : dot(g.color === '#f3efe4' ? '#e77aa6' : g.color),
+          label: w.loading ? '' : (g.code || 'IMG') + '-' + String(i + 1).padStart(3, '0')
+        }));
+      }
+
+      if (w.kind === 'note') {
+        const n = this.notes[st.noteIdx] || this.notes[0] || null;
+        const body = n ? (n.body && n.body.length ? n.body : (n.dek ? [n.dek] : [])) : [];
+        base.noteTitle = n ? n.title : 'No field notes yet';
+        base.noteMeta = n ? [
+          n.readingMinutes ? n.readingMinutes + ' MIN' : '',
+          n.date ? new Date(n.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }).toUpperCase() : '',
+          (n.place || '').toUpperCase()
+        ].filter(Boolean).join(' · ') : 'PUBLISH A FIELD NOTE IN SANITY';
+        base.paras = body.slice(0, 4).map(t => ({ text: t }));
+        base.hasMoreNotes = this.notes.length > 1;
+        base.nextNote = () => {
+          const next = (st.noteIdx + 1) % this.notes.length;
+          this.setState({ noteIdx: next }, () => this.patch(w.id, { title: this.noteTitle(next) }));
+        };
+        base.nextNoteKey = this.keyActivate(() => base.nextNote());
+      }
+
+      if (w.kind === 'contact') {
+        const s2 = this.settings || {};
+        base.contactBlurb = s2.tagline || 'Commissions, print enquiries and licensing.';
+        base.contactRows = [].concat(
+          s2.email ? [{ label: s2.email }] : [],
+          (s2.social || []).map(l => ({ label: l.label || l.url }))
+        );
+        base.mailto = s2.email ? 'mailto:' + s2.email : '#';
+        base.canMail = !!s2.email;
+      }
+
+      if (w.kind === 'viewer') {
+        const list = this.framesOf(g.id);
+        const f = list.length ? (list[(w.idx || 0) % list.length] || list[0]) : null;
+        if (!f) {
+          base.isViewer = false;
+          base.isAlert = true;
+          base.alertTitle = 'Frame unavailable';
+          base.message = 'This frame is no longer in the Sanity dataset.';
+          return base;
+        }
+        base.plate = 'position:relative;height:' + (w.zoom ? 340 : 290) + 'px;border:3px solid #14131a;overflow:hidden;background:#191722;cursor:' + (w.zoom ? 'zoom-out' : 'zoom-in');
+        base.plateInner = 'position:absolute;inset:0;background-color:#191722;' + (w.loading ? (this.lqipBg(f) || 'background-image:' + this.plateBg(f.idx + g.count)) : this.imgBg(f, 'full', f.idx + g.count)) + ';transform:scale(' + (w.zoom ? 2.6 : 1) + ');transform-origin:center;transition:transform .18s ease';
+        base.screen = w.loading ? this.dither(g.color) : dot('#f2c94c');
+        base.plateLabel = w.loading ? '[ LOADING ' + g.code + '-' + String(f.idx + 1).padStart(3, '0') + ' ]' : '[ ' + f.title.toUpperCase() + ' · 2400×1600 ]';
+        base.frameTitle = f.title;
+        base.exif = f.shutter + ' · f/' + f.ap + ' · ' + f.focal + 'mm · ISO ' + f.iso + ' · ' + f.place;
+        base.tag = 'font-family:Silkscreen,monospace;font-size:10px;flex:none;background:' + g.color + ';border:2px solid #14131a;padding:4px 7px';
+        base.code = g.code;
+        base.counter = String((w.idx || 0) + 1) + ' / ' + list.length + '  ·  ' + g.name.toUpperCase();
+        base.prev = () => this.step(w, -1);
+        base.next = () => this.step(w, 1);
+        base.prevKey = this.keyActivate(() => this.step(w, -1));
+        base.nextKey = this.keyActivate(() => this.step(w, 1));
+        base.toggleZoom = () => { this.patch(w.id, { zoom: !w.zoom }); };
+        base.zoomKey = this.keyActivate(() => this.patch(w.id, { zoom: !w.zoom }));
+        base.zoomLabel = w.zoom ? '100%' : 'FIT';
+        base.zoomBtn = 'border:3px solid #14131a;padding:5px 11px;font-size:10.5px;font-weight:700;letter-spacing:.08em;cursor:pointer;background:' + (w.zoom ? '#f2c94c' : '#f3efe4') + ';box-shadow:3px 3px 0 #14131a';
+        base.exifOpen = !!w.exifOpen;
+        base.toggleExif = () => this.patch(w.id, { exifOpen: !w.exifOpen });
+        base.exifKey = this.keyActivate(() => this.patch(w.id, { exifOpen: !w.exifOpen }));
+        base.exifBtn = 'border:3px solid #14131a;padding:5px 11px;font-size:10.5px;font-weight:700;letter-spacing:.08em;cursor:pointer;background:' + (w.exifOpen ? '#8fc9c2' : '#f3efe4') + ';box-shadow:3px 3px 0 #14131a';
+        base.exifRows = this.exifRows(f, g);
+      }
+
+      if (w.kind === 'search' || w.kind === 'recent') {
+        let list;
+        if (w.kind === 'search') {
+          const q = (w.query || '').trim().toLowerCase();
+          list = !q ? this.catalog.slice(0, 8) : this.catalog.filter(f => {
+            const g2 = this.genre(f.genre);
+            return (f.title + ' ' + f.place + ' ' + g2.name + ' ' + f.year + ' ' + f.focal + 'mm f/' + f.ap + ' ' + f.iso).toLowerCase().indexOf(q) >= 0;
+          });
+          base.query = w.query || '';
+          base.onQuery = e => this.patch(w.id, { query: e.target.value });
+          base.resultCount = (w.query ? list.length + ' MATCHES' : 'RECENT ADDITIONS') + ' · ' + this.catalog.length + ' INDEXED';
+        } else {
+          list = st.recent.map(id => this.catalog.find(f => f.id === id)).filter(Boolean);
+          base.resultCount = list.length ? list.length + ' FRAMES · NEWEST FIRST' : 'NOTHING VIEWED YET';
+        }
+        base.results = list.slice(0, 24).map(f => {
+          const g2 = this.genre(f.genre);
+          return {
+            open: () => this.openFrame(f),
+            key: this.keyActivate(() => this.openFrame(f)),
+            aria: 'Open ' + f.title,
+            title: f.title,
+            meta: g2.code + ' · ' + f.focal + 'mm · ' + f.year,
+            chip: 'width:14px;height:14px;flex:none;border:2px solid #14131a;background:' + g2.color
+          };
+        });
+      }
+      return base;
+    });
+
+    const topZ = top ? top.z : 0;
+    return {
+      clock: st.now,
+      icons, wins,
+      iconGrid: 'position:absolute;top:64px;left:' + (narrow ? 12 : 22) + 'px;width:' + (cols * cellW + (cols - 1) * gapX) + 'px;max-height:' + availH + 'px;display:grid;grid-template-columns:repeat(' + cols + ',' + cellW + 'px);gap:' + gapY + 'px ' + gapX + 'px;z-index:10',
+      startOpen: st.startOpen,
+      startMenu: 'position:absolute;left:0;bottom:44px;z-index:9600;display:flex;width:' + (narrow ? '100%' : '308px') + ';border:4px solid #14131a;background:#f3efe4;box-shadow:10px -10px 0 rgba(20,19,26,.4);max-height:' + (a.H - 100) + 'px;overflow:auto',
+      toggleStart: () => this.setState(s => ({ startOpen: !s.startOpen })),
+      startKey: this.keyActivate(() => this.setState(s => ({ startOpen: !s.startOpen }))),
+      startBtn: 'display:flex;align-items:center;gap:8px;flex:none;cursor:pointer;padding:6px 14px;font-family:Archivo Black,sans-serif;font-size:14px;letter-spacing:-.01em;border:3px solid #14131a;' +
+        (st.startOpen ? 'background:#14131a;color:#f3efe4;box-shadow:inset 3px 3px 0 rgba(243,239,228,.25)' : 'background:#f2c94c;color:#14131a;box-shadow:4px 4px 0 #14131a'),
+      menu: this.genres.map(g => ({
+        name: g.name + ' / ' + g.count,
+        open: () => this.openGenre(g),
+        key: this.keyActivate(() => this.openGenre(g)),
+        chip: 'width:16px;height:16px;flex:none;border:2px solid #14131a;background:' + g.color
+      })),
+      noGalleries: this.genres.length === 0,
+      hasNotes: this.notes.length > 0,
+      hasContact: !!this.settings,
+      brand: ((this.settings && this.settings.name) || 'Dillon Stadt').toUpperCase(),
+      tagline: ((this.settings && this.settings.tagline) || 'Photography').toUpperCase(),
+      links: ((this.settings && this.settings.social) || []).slice(0, 4).map((l, i) => ({
+        label: (l.label || 'LINK').toUpperCase().slice(0, 8),
+        url: l.url || '#',
+        style: 'background:' + ['#e77aa6', '#f2c94c', '#8fc9c2', '#a99ce0'][i % 4] + ';border:2px solid #14131a;padding:4px 8px;cursor:pointer;color:#14131a;text-decoration:none;white-space:nowrap'
+      })),
+      showEmpty: !this.genres.length && !this.catalog.length,
+      emptyTag: st.source === 'loading' ? 'CONNECTING' : st.source === 'error' ? 'CONTENT SERVER' : 'NO CONTENT',
+      emptyTitle: st.source === 'loading' ? 'Reading the catalogue' : st.source === 'error' ? 'Could not reach Sanity' : 'Nothing published yet',
+      emptyBody: st.source === 'loading'
+        ? 'Fetching albums and frames from the content server.'
+        : st.source === 'error'
+          ? (st.loadError ? st.loadError + '. ' : '') + 'Check the project id, dataset and CORS origins in content/sanity.js.'
+          : 'Create Genre documents in Sanity Studio and they appear here as albums. Frames land inside the album they reference.',
+      openNotes: () => this.openPanel('note', this.noteTitle(st.noteIdx), '#f2c94c'),
+      openContact: () => this.openPanel('contact', 'CONTACT', '#8fc9c2'),
+      openSearch: () => this.openPanel('search', 'SEARCH', '#f2c94c', { query: '' }),
+      openRecent: () => this.openPanel('recent', 'RECENTLY VIEWED', '#a99ce0'),
+      deskDown: e => {
+        if (e.target !== e.currentTarget) return;
+        this.setState(s => ({ startOpen: false, iconIdx: -1, wins: s.wins.map(w => Object.assign({}, w, { min: true })) }), () => this.persist());
+      },
+      taskbar: st.wins.map(w => ({
+        title: w.title,
+        aria: (w.min ? 'Restore ' : 'Minimize ') + w.title,
+        click: () => { if (!w.min && w.z === topZ) this.minimize(w.id); else this.raise(w.id); },
+        key: this.keyActivate(() => { if (!w.min && w.z === topZ) this.minimize(w.id); else this.raise(w.id); }),
+        chip: 'width:13px;height:13px;flex:none;border:2px solid #14131a;background:' + w.accent,
+        style: 'display:flex;align-items:center;gap:8px;flex:1 1 0;min-width:0;max-width:190px;overflow:hidden;padding:6px 10px;cursor:pointer;font-size:11px;letter-spacing:.04em;border:3px solid #14131a;color:#14131a;' +
+          (!w.min && w.z === topZ ? 'background:#dcd7c8;box-shadow:inset 3px 3px 0 rgba(20,19,26,.22)' : 'background:#f3efe4;box-shadow:3px 3px 0 #14131a')
+      })),
+      closeAll: () => this.setState({ wins: [], startOpen: false }, () => this.persist())
+    };
+  }
+}
+</script>
+</body>
+</html>
