@@ -220,6 +220,17 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 </div>
 </sc-if>
 
+<sc-if value="{{ w.isLinks }}" hint-placeholder-val="{{ true }}">
+<div style="padding:20px 22px 24px;background:#8fc9c2">
+<div style="font-family:'Archivo Black',sans-serif;font-size:24px;text-transform:uppercase;letter-spacing:-.02em">Links</div>
+<div style="display:grid;gap:10px;font-size:12px;margin-top:16px">
+<sc-for list="{{ w.linkRows }}" as="l" hint-placeholder-count="2">
+<a href="{{ l.url }}" target="_blank" rel="noreferrer" style="display:block;background:#f3efe4;border:3px solid #14131a;padding:10px 12px;overflow:hidden;text-overflow:ellipsis;text-decoration:none;color:#14131a;font-weight:700;letter-spacing:.04em" style-hover="background:#14131a;color:#f3efe4">{{ l.label }}</a>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
 </div>
 
 <sc-if value="{{ w.canResize }}" hint-placeholder-val="{{ false }}">
@@ -259,6 +270,12 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 <div onClick="{{ openContact }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px" style-hover="background:#14131a;color:#f3efe4">
 <span style="width:16px;height:16px;background:#8fc9c2;border:2px solid #14131a;flex:none"></span>Contact
 </div>
+</sc-if>
+<sc-if value="{{ hasLinks }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ openLinks }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px" style-hover="background:#14131a;color:#f3efe4">
+<span style="width:16px;height:16px;background:#8fc9c2;border:2px solid #14131a;flex:none"></span>Links
+</div>
+</sc-if>
 <div style="height:3px;background:#14131a;margin:8px 6px"></div>
 <div onClick="{{ closeAll }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px 9px;cursor:pointer;font-size:12.5px;font-weight:700" style-hover="background:#e77aa6">
 <span style="width:16px;height:16px;background:#e77aa6;border:2px solid #14131a;flex:none"></span>Close all windows
@@ -311,6 +328,7 @@ class Component extends DCLogic {
     const list = [];
     if (this.notes.length) list.push({ kind: 'note', name: 'Notes', color: '#f3efe4', accent: '#f2c94c', aria: 'Open field notes', dark: false });
     if (this.settings) list.push({ kind: 'contact', name: 'Contact', color: '#14131a', accent: '#8fc9c2', title: 'CONTACT', aria: 'Open contact', dark: true });
+    if (this.settings && (this.settings.links || []).length) list.push({ kind: 'links', name: 'Links', color: '#8fc9c2', accent: '#8fc9c2', title: 'LINKS', aria: 'Open links', dark: false });
     list.push({ kind: 'search', name: 'Search', color: '#f2c94c', accent: '#f2c94c', title: 'SEARCH', aria: 'Open search', dark: false });
     list.push({ kind: 'recent', name: 'Recent', color: '#a99ce0', accent: '#a99ce0', title: 'RECENTLY VIEWED', aria: 'Open recently viewed', dark: false });
     return list;
@@ -324,6 +342,7 @@ class Component extends DCLogic {
     if (w.kind === 'viewer') return this.framesOf(w.genre).length > 0;
     if (w.kind === 'note') return this.notes.length > 0;
     if (w.kind === 'contact') return !!this.settings;
+    if (w.kind === 'links') return !!(this.settings && (this.settings.links || []).length);
     return w.kind === 'search' || w.kind === 'recent';
   }
   time() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
@@ -635,7 +654,7 @@ class Component extends DCLogic {
     const a = this.area();
     const narrow = st.narrow;
     const dot = c => 'position:absolute;inset:0;background-color:rgba(20,19,26,.48);background-image:radial-gradient(' + c + ' 1.5px,transparent 1.6px);background-size:7px 7px;transition:opacity .25s ease;cursor:pointer';
-    const toolTag = { note: 'NTS', contact: 'MSG', search: 'FND', recent: 'RCT' };
+    const toolTag = { note: 'NTS', contact: 'MSG', search: 'FND', recent: 'RCT', links: 'LNK' };
     const iconEntries = this.genres.map(g => ({ name: g.name, color: g.color, tag: (g.code || g.name.slice(0, 3)).toUpperCase(), aria: 'Open ' + g.name + ' gallery, ' + g.count + ' frames', dark: false }))
       .concat(this.tools().map(t => ({ name: t.name, color: t.color, tag: toolTag[t.kind] || t.name.slice(0, 3).toUpperCase(), aria: t.aria, dark: t.dark })));
 
@@ -688,6 +707,7 @@ class Component extends DCLogic {
         maxKey: this.keyActivate(() => this.maximize(w.id)),
         isSheet: w.kind === 'sheet', isViewer: w.kind === 'viewer', isNote: w.kind === 'note',
         isContact: w.kind === 'contact', isSearch: w.kind === 'search', isRecent: w.kind === 'recent',
+        isLinks: w.kind === 'links',
         isAlert: w.kind === 'alert', alertTitle: w.alertTitle || '', message: w.message || ''
       };
 
@@ -734,6 +754,14 @@ class Component extends DCLogic {
         );
         base.mailto = s2.email ? 'mailto:' + s2.email : '#';
         base.canMail = !!s2.email;
+      }
+
+      if (w.kind === 'links') {
+        const s2 = this.settings || {};
+        base.linkRows = (s2.links || []).map(l => ({
+          label: (l.label || l.url || 'LINK').toUpperCase(),
+          url: l.url || '#'
+        }));
       }
 
       if (w.kind === 'viewer') {
@@ -824,6 +852,7 @@ class Component extends DCLogic {
       noGalleries: this.genres.length === 0,
       hasNotes: this.notes.length > 0,
       hasContact: !!this.settings,
+      hasLinks: !!(this.settings && (this.settings.links || []).length),
       brand: ((this.settings && this.settings.name) || 'Dillon Stadt').toUpperCase(),
       tagline: ((this.settings && this.settings.tagline) || 'Photography').toUpperCase(),
       links: ((this.settings && this.settings.social) || []).slice(0, 4).map((l, i) => ({
@@ -841,6 +870,7 @@ class Component extends DCLogic {
           : 'Create Genre documents in Sanity Studio and they appear here as albums. Frames land inside the album they reference.',
       openNotes: () => this.openPanel('note', this.noteTitle(st.noteIdx), '#f2c94c'),
       openContact: () => this.openPanel('contact', 'CONTACT', '#8fc9c2'),
+      openLinks: () => this.openPanel('links', 'LINKS', '#8fc9c2'),
       openSearch: () => this.openPanel('search', 'SEARCH', '#f2c94c', { query: '' }),
       openRecent: () => this.openPanel('recent', 'RECENTLY VIEWED', '#a99ce0'),
       deskDown: e => {
