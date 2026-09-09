@@ -76,8 +76,7 @@ export const SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
   email,
   "wallpaper": wallpaper.hex,
   defaultOpen,
-  social[]{ label, url },
-  links[]{ label, url }
+  social[]{ label, url }
 }`;
 
 export const NOTES_QUERY = `*[_type == "fieldNote"] | order(publishedAt desc)[0...20]{
