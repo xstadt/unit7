@@ -220,6 +220,62 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 </div>
 </sc-if>
 
+<sc-if value="{{ w.isApps }}" hint-placeholder-val="{{ true }}">
+<div style="padding:14px;background:#f3efe4">
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:10px">{{ w.appCount }}</div>
+<div style="display:grid;gap:8px">
+<sc-for list="{{ w.apps }}" as="ap" hint-placeholder-count="1">
+<div onClick="{{ ap.open }}" onKeyDown="{{ ap.key }}" tabindex="0" role="button" aria-label="{{ ap.aria }}" style="display:flex;align-items:center;gap:12px;border:3px solid #14131a;background:#f3efe4;box-shadow:4px 4px 0 #14131a;padding:9px 11px;cursor:pointer" style-hover="background:#14131a;color:#f3efe4">
+<span style="{{ ap.tile }}">{{ ap.tag }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-family:'Archivo Black',sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:-.01em">{{ ap.name }}</span>
+<span style="display:block;font-family:'Silkscreen',monospace;font-size:9.5px;opacity:.75;margin-top:2px">{{ ap.meta }}</span>
+</span>
+<span style="font-size:10.5px;font-weight:700;letter-spacing:.1em;white-space:nowrap">OPEN →</span>
+</div>
+</sc-for>
+<div style="border:3px dashed rgba(20,19,26,.35);padding:10px 11px;font-family:'Silkscreen',monospace;font-size:10px;color:#57535e">MORE APPS IN PROGRESS</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ w.isBreathe }}" hint-placeholder-val="{{ true }}">
+<div style="background:#f3efe4">
+<div style="position:relative;height:270px;overflow:hidden;border-bottom:4px solid #14131a;background-color:#241f2e;background-image:radial-gradient(rgba(242,201,76,.28) 1.3px,transparent 1.4px);background-size:9px 9px">
+<div style="position:absolute;left:50%;top:50%;width:206px;height:206px;margin:-103px 0 0 -103px;border-radius:50%;border:2px dashed rgba(243,239,228,.4)"></div>
+<div style="{{ w.orb }}"></div>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;pointer-events:none">
+<div aria-live="polite" style="font-family:'Archivo Black',sans-serif;font-size:19px;letter-spacing:-.01em;background:#f3efe4;border:3px solid #14131a;box-shadow:3px 3px 0 #14131a;padding:4px 11px;white-space:nowrap">{{ w.phase }}</div>
+<div style="font-family:'Silkscreen',monospace;font-size:9.5px;background:#14131a;color:#f3efe4;padding:3px 7px;white-space:nowrap">{{ w.phaseSub }}</div>
+</div>
+<div style="position:absolute;top:10px;left:10px;font-family:'Silkscreen',monospace;font-size:10px;background:#f3efe4;border:2px solid #14131a;padding:3px 6px">{{ w.rhythm }}</div>
+<div style="position:absolute;top:10px;right:10px;font-family:'Silkscreen',monospace;font-size:10px;background:#f2c94c;border:2px solid #14131a;padding:3px 6px">{{ w.remain }}</div>
+</div>
+<div style="padding:14px">
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:7px">PATTERN</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ w.patterns }}" as="bp" hint-placeholder-count="4">
+<span onClick="{{ bp.pick }}" onKeyDown="{{ bp.key }}" tabindex="0" role="button" aria-label="{{ bp.aria }}" style="{{ bp.style }}">{{ bp.label }}</span>
+</sc-for>
+</div>
+<p style="font-family:'Instrument Serif',serif;font-size:17px;line-height:1.35;margin:9px 0 12px;color:#3d3947;text-wrap:pretty">{{ w.patternNote }}</p>
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:7px">LENGTH</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ w.lengths }}" as="bl" hint-placeholder-count="4">
+<span onClick="{{ bl.pick }}" onKeyDown="{{ bl.key }}" tabindex="0" role="button" aria-label="{{ bl.aria }}" style="{{ bl.style }}">{{ bl.label }}</span>
+</sc-for>
+</div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:16px;border-top:3px solid #14131a;padding-top:12px;flex-wrap:wrap">
+<span onClick="{{ w.toggleRun }}" onKeyDown="{{ w.toggleRunKey }}" tabindex="0" role="button" aria-label="{{ w.runLabel }}" style="background:#f2c94c;border:3px solid #14131a;box-shadow:4px 4px 0 #14131a;padding:8px 18px;font-size:11px;font-weight:700;letter-spacing:.1em;cursor:pointer" style-hover="transform:translate(4px,4px);box-shadow:0 0 0 #14131a">{{ w.runLabel }}</span>
+<span onClick="{{ w.reset }}" onKeyDown="{{ w.resetKey }}" tabindex="0" role="button" aria-label="Reset session" style="border:3px solid #14131a;background:#f3efe4;box-shadow:3px 3px 0 #14131a;padding:6px 11px;font-size:10.5px;font-weight:700;letter-spacing:.08em;cursor:pointer" style-hover="background:#e77aa6">RESET</span>
+<span style="flex:1"></span>
+<span onClick="{{ w.cycleSound }}" onKeyDown="{{ w.cycleSoundKey }}" tabindex="0" role="button" aria-label="{{ w.soundAria }}" style="{{ w.soundBtn }}">{{ w.soundLabel }}</span>
+</div>
+<div style="font-family:'Silkscreen',monospace;font-size:9.5px;color:#57535e;margin-top:12px">SPACE STARTS / PAUSES</div>
+</div>
+</div>
+</sc-if>
+
 </div>
 
 <sc-if value="{{ w.canResize }}" hint-placeholder-val="{{ false }}">
@@ -241,6 +297,13 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 <sc-for list="{{ menu }}" as="m" hint-placeholder-count="7">
 <div onClick="{{ m.open }}" onKeyDown="{{ m.key }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px;letter-spacing:.02em" style-hover="background:#14131a;color:#f3efe4">
 <span style="{{ m.chip }}"></span>{{ m.name }}
+</div>
+</sc-for>
+<div style="height:3px;background:#14131a;margin:8px 6px"></div>
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;padding:6px 10px 8px">APPS</div>
+<sc-for list="{{ appMenu }}" as="am" hint-placeholder-count="1">
+<div onClick="{{ am.open }}" onKeyDown="{{ am.key }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px;letter-spacing:.02em" style-hover="background:#14131a;color:#f3efe4">
+<span style="{{ am.chip }}"></span>{{ am.name }}
 </div>
 </sc-for>
 <div style="height:3px;background:#14131a;margin:8px 6px"></div>
@@ -300,7 +363,124 @@ class Component extends DCLogic {
     };
     this.pointer = null;
     this.timers = {};
+    this.breath = this.freshBreath();
+    this.audio = null;
   }
+
+  // ---- Apps ---------------------------------------------------------------
+  // Add a new app by giving it an entry here, a window kind, and a template block.
+  apps() {
+    return [
+      { id: 'breathe', name: 'Breathe', meta: 'ZEN TIMER · BREATHING', tag: 'BRE', color: '#8fc9c2', open: () => this.openBreathe() }
+    ];
+  }
+  openApps() { this.openPanel('apps', 'APPS', '#e9a8d2', { w: 400 }); }
+  openBreathe() { this.openPanel('breathe', 'BREATHE', '#8fc9c2', { w: 400, pattern: 'box', mins: 3, sound: 'bell' }); }
+
+  // ---- Breathe ------------------------------------------------------------
+  breathPatterns() {
+    return {
+      box:  { label: 'BOX',      rhythm: '4 · 4 · 4 · 4', phases: [['in', 4], ['hold', 4], ['out', 4], ['hold', 4]], note: 'Equal counts in, hold, out, hold. Steady and even.' },
+      r478: { label: '4-7-8',    rhythm: '4 · 7 · 8',     phases: [['in', 4], ['hold', 7], ['out', 8]], note: 'In for four, hold for seven, out for eight. Slow and settling.' },
+      even: { label: 'EVEN',     rhythm: '5.5 · 5.5',     phases: [['in', 5.5], ['out', 5.5]], note: 'Five and a half seconds in, five and a half out. About six breaths a minute.' },
+      long: { label: 'LONG OUT', rhythm: '4 · 6',         phases: [['in', 4], ['out', 6]], note: 'Breathe out a little longer than you breathe in. An easy place to start.' }
+    };
+  }
+  freshBreath() { return { running: false, acc: 0, t0: 0, done: false, key: null, dur: 0 }; }
+  breathWin() { return this.state.wins.find(w => w.kind === 'breathe') || null; }
+  breathModel(w) {
+    const pats = this.breathPatterns();
+    const P = pats[w.pattern] || pats.box;
+    const cycle = P.phases.reduce((s, p) => s + p[1], 0);
+    const cycles = Math.max(1, Math.ceil(((w.mins || 3) * 60) / cycle));
+    const total = cycles * cycle;
+    const b = this.breath;
+    let elapsed = b.acc + (b.running ? (Date.now() - b.t0) / 1000 : 0);
+    const done = b.done || elapsed >= total;
+    if (done) elapsed = total;
+    const idle = !done && elapsed === 0 && !b.running;
+    const c = Math.min(cycles - 1, Math.floor(elapsed / cycle));
+    let t = elapsed - c * cycle, level = 0, i = 0;
+    for (; i < P.phases.length; i++) {
+      const [k, len] = P.phases[i];
+      const to = k === 'in' ? 1 : k === 'out' ? 0 : level;
+      if (t < len || i === P.phases.length - 1) {
+        const prog = Math.max(0, Math.min(1, t / len));
+        const eased = 0.5 - 0.5 * Math.cos(Math.PI * prog);
+        return { P, cycle, cycles, total, elapsed, done, idle, c, i, k, len, tIn: t, from: level, to, cur: level + (to - level) * eased, key: c + ':' + i, phaseLeft: Math.max(0.05, len - t) };
+      }
+      t -= len; level = to;
+    }
+  }
+  fmt(sec) { const s = Math.max(0, Math.ceil(sec)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+  breatheTitle(w) {
+    const b = this.breath, m = this.breathModel(w);
+    if (m.idle) return 'BREATHE';
+    if (m.done) return 'BREATHE · DONE';
+    return 'BREATHE · ' + this.fmt(m.total - m.elapsed) + (b.running ? '' : ' · PAUSED');
+  }
+  ensureAudio() {
+    try {
+      if (!this.audio) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) this.audio = new AC(); }
+      if (this.audio && this.audio.state === 'suspended') this.audio.resume();
+    } catch (err) { this.audio = null; }
+  }
+  tone(partials, dur, peak) {
+    const ctx = this.audio; if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+      partials.forEach(([f, g]) => {
+        const o = ctx.createOscillator(), gn = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = f;
+        gn.gain.setValueAtTime(0.0001, now);
+        gn.gain.linearRampToValueAtTime(peak * g, now + 0.03);
+        gn.gain.exponentialRampToValueAtTime(0.0001, now + dur * (g > 0.4 ? 1 : 0.6));
+        o.connect(gn); gn.connect(ctx.destination);
+        o.start(now); o.stop(now + dur + 0.1);
+      });
+    } catch (err) { /* audio unavailable */ }
+  }
+  bell() { this.tone([[220, 1], [440 * 1.38, 0.35], [220 * 5.4, 0.12]], 4.5, 0.22); }
+  cue(k) { this.tone([[k === 'in' ? 396 : k === 'out' ? 297 : 352, 1]], 0.9, 0.08); }
+  toggleBreath() {
+    const w = this.breathWin(); if (!w) return;
+    const b = this.breath;
+    if (b.running) {
+      b.acc += (Date.now() - b.t0) / 1000; b.running = false; b.key = null;
+      clearInterval(this.timers.breath);
+      this.setState({ btick: Date.now() });
+      return;
+    }
+    if (b.done) this.breath = this.freshBreath();
+    const nb = this.breath;
+    if ((w.sound || 'bell') !== 'off') this.ensureAudio();
+    if (nb.acc === 0 && (w.sound || 'bell') !== 'off') this.bell();
+    nb.running = true; nb.t0 = Date.now(); nb.key = null;
+    clearInterval(this.timers.breath);
+    this.timers.breath = setInterval(() => this.breathTick(), 200);
+    this.breathTick();
+  }
+  resetBreath() {
+    clearInterval(this.timers.breath);
+    this.breath = this.freshBreath();
+    this.setState({ btick: Date.now() });
+  }
+  breathTick() {
+    const w = this.breathWin();
+    if (!w) { this.resetBreath(); return; }
+    const b = this.breath, m = this.breathModel(w);
+    if (m.done) {
+      clearInterval(this.timers.breath);
+      b.running = false; b.done = true; b.acc = m.total; b.key = null;
+      if ((w.sound || 'bell') !== 'off') this.bell();
+    } else if (m.key !== b.key) {
+      const first = b.key === null;
+      b.key = m.key; b.dur = m.phaseLeft;
+      if (!first && w.sound === 'cues') this.cue(m.k);
+    }
+    this.setState({ btick: Date.now() });
+  }
+  setBreath(w, props) { this.resetBreath(); this.patch(w.id, props); }
 
   genre(id) {
     return this.genres.find(g => g.id === id) || this.genres[0] ||
@@ -311,6 +491,7 @@ class Component extends DCLogic {
     const list = [];
     if (this.notes.length) list.push({ kind: 'note', name: 'Notes', color: '#f3efe4', accent: '#f2c94c', aria: 'Open field notes', dark: false });
     if (this.settings) list.push({ kind: 'contact', name: 'Contact', color: '#14131a', accent: '#8fc9c2', title: 'CONTACT', aria: 'Open contact', dark: true });
+    list.push({ kind: 'apps', name: 'Apps', color: '#e9a8d2', accent: '#e9a8d2', title: 'APPS', aria: 'Open apps', dark: false });
     list.push({ kind: 'search', name: 'Search', color: '#f2c94c', accent: '#f2c94c', title: 'SEARCH', aria: 'Open search', dark: false });
     list.push({ kind: 'recent', name: 'Recent', color: '#a99ce0', accent: '#a99ce0', title: 'RECENTLY VIEWED', aria: 'Open recently viewed', dark: false });
     return list;
@@ -324,7 +505,7 @@ class Component extends DCLogic {
     if (w.kind === 'viewer') return this.framesOf(w.genre).length > 0;
     if (w.kind === 'note') return this.notes.length > 0;
     if (w.kind === 'contact') return !!this.settings;
-    return w.kind === 'search' || w.kind === 'recent';
+    return w.kind === 'search' || w.kind === 'recent' || w.kind === 'apps' || w.kind === 'breathe';
   }
   time() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
   area() {
@@ -383,7 +564,7 @@ class Component extends DCLogic {
   persist() {
     try {
       const live = this.state.wins.filter(w => w.kind !== 'alert');
-      const wins = live.map(w => ({ id: w.id, kind: w.kind, title: w.title, accent: w.accent, x: w.x, y: w.y, w: w.w, h: w.h, z: w.z, min: w.min, genre: w.genre, idx: w.idx, exifOpen: w.exifOpen, zoom: w.zoom, query: w.query }));
+      const wins = live.map(w => ({ id: w.id, kind: w.kind, title: w.title, accent: w.accent, x: w.x, y: w.y, w: w.w, h: w.h, z: w.z, min: w.min, genre: w.genre, idx: w.idx, exifOpen: w.exifOpen, zoom: w.zoom, query: w.query, pattern: w.pattern, mins: w.mins, sound: w.sound }));
       localStorage.setItem('dstadt-desk-v1', JSON.stringify({ wins, z: this.state.z, recent: this.state.recent }));
       const tokens = live.map(w => this.tokenOf(w)).join(',');
       const url = new URL(window.location.href);
@@ -425,6 +606,8 @@ class Component extends DCLogic {
       else if (t === 'contact' && this.settings) wins.push({ id: 'contact', kind: 'contact', title: 'CONTACT', accent: '#8fc9c2', x, y, w: 400, z });
       else if (t === 'search') wins.push({ id: 'search', kind: 'search', title: 'SEARCH', accent: '#f2c94c', x, y, w: 440, z, query: '' });
       else if (t === 'recent') wins.push({ id: 'recent', kind: 'recent', title: 'RECENTLY VIEWED', accent: '#a99ce0', x, y, w: 420, z });
+      else if (t === 'apps') wins.push({ id: 'apps', kind: 'apps', title: 'APPS', accent: '#e9a8d2', x, y, w: 400, z });
+      else if (t === 'breathe') wins.push({ id: 'breathe', kind: 'breathe', title: 'BREATHE', accent: '#8fc9c2', x, y, w: 400, z, pattern: 'box', mins: 3, sound: 'bell' });
     });
     this.setState({ wins, z });
   }
@@ -434,7 +617,7 @@ class Component extends DCLogic {
     this.setState(s => ({ z: s.z + 1, startOpen: false, wins: s.wins.map(w => (w.id === id ? Object.assign({}, w, { z: s.z + 1, min: false }) : w)) }), () => this.persist());
   }
   minimize(id) { this.setState(s => ({ wins: s.wins.map(w => (w.id === id ? Object.assign({}, w, { min: true }) : w)) }), () => this.persist()); }
-  close(id) { this.setState(s => ({ wins: s.wins.filter(w => w.id !== id) }), () => this.persist()); }
+  close(id) { if (id === 'breathe') this.resetBreath(); this.setState(s => ({ wins: s.wins.filter(w => w.id !== id) }), () => this.persist()); }
   topWin() {
     const open = this.state.wins.filter(w => !w.min);
     if (!open.length) return null;
@@ -534,6 +717,7 @@ class Component extends DCLogic {
     if (typing) { if (e.key === 'Escape') e.target.blur(); return; }
     const top = this.topWin();
     if (mod && e.key.toLowerCase() === 'w') { e.preventDefault(); if (top) this.close(top.id); return; }
+    if (e.key === ' ' && top && top.kind === 'breathe' && this.state.iconIdx < 0) { e.preventDefault(); this.toggleBreath(); return; }
     if (e.key === 'Escape') { if (this.state.startOpen) this.setState({ startOpen: false }); else if (top) this.close(top.id); return; }
     if (e.altKey && e.key === 'Tab') {
       e.preventDefault();
@@ -567,6 +751,7 @@ class Component extends DCLogic {
     const t = this.tools()[i - this.genres.length];
     if (!t) return;
     if (t.kind === 'note') return this.openPanel('note', this.noteTitle(this.state.noteIdx), '#f2c94c');
+    if (t.kind === 'apps') return this.openApps();
     return this.openPanel(t.kind, t.title, t.accent, t.kind === 'search' ? { query: '' } : null);
   }
   keyActivate(fn) {
@@ -635,7 +820,7 @@ class Component extends DCLogic {
     const a = this.area();
     const narrow = st.narrow;
     const dot = c => 'position:absolute;inset:0;background-color:rgba(20,19,26,.48);background-image:radial-gradient(' + c + ' 1.5px,transparent 1.6px);background-size:7px 7px;transition:opacity .25s ease;cursor:pointer';
-    const toolTag = { note: 'NTS', contact: 'MSG', search: 'FND', recent: 'RCT' };
+    const toolTag = { note: 'NTS', contact: 'MSG', apps: 'APP', search: 'FND', recent: 'RCT' };
     const iconEntries = this.genres.map(g => ({ name: g.name, color: g.color, tag: (g.code || g.name.slice(0, 3)).toUpperCase(), aria: 'Open ' + g.name + ' gallery, ' + g.count + ' frames', dark: false }))
       .concat(this.tools().map(t => ({ name: t.name, color: t.color, tag: toolTag[t.kind] || t.name.slice(0, 3).toUpperCase(), aria: t.aria, dark: t.dark })));
 
@@ -669,7 +854,7 @@ class Component extends DCLogic {
     const wins = st.wins.map(w => {
       const g = this.genre(w.genre || 'aut');
       const base = {
-        id: w.id, title: w.title,
+        id: w.id, title: w.kind === 'breathe' ? this.breatheTitle(w) : w.title,
         frame: narrow
           ? 'position:absolute;left:0;right:0;top:' + a.top + 'px;bottom:' + a.bottom + 'px;z-index:' + w.z + ';border:4px solid #14131a;background:#f3efe4;display:flex;flex-direction:column;overflow:hidden' + (w.min ? ';display:none' : '')
           : 'position:absolute;left:' + w.x + 'px;top:' + w.y + 'px;width:' + w.w + 'px;' + (w.h ? 'height:' + Math.max(200, Math.min(w.h, a.H - a.bottom - w.y)) + 'px;' : '') + 'max-height:' + Math.max(200, a.H - a.bottom - w.y) + 'px;z-index:' + w.z + ';border:4px solid #14131a;background:#f3efe4;box-shadow:10px 10px 0 rgba(20,19,26,.45);display:flex;flex-direction:column;overflow:hidden' + (w.min ? ';display:none' : ''),
@@ -688,6 +873,7 @@ class Component extends DCLogic {
         maxKey: this.keyActivate(() => this.maximize(w.id)),
         isSheet: w.kind === 'sheet', isViewer: w.kind === 'viewer', isNote: w.kind === 'note',
         isContact: w.kind === 'contact', isSearch: w.kind === 'search', isRecent: w.kind === 'recent',
+        isApps: w.kind === 'apps', isBreathe: w.kind === 'breathe',
         isAlert: w.kind === 'alert', alertTitle: w.alertTitle || '', message: w.message || ''
       };
 
@@ -774,6 +960,58 @@ class Component extends DCLogic {
         base.exifRows = this.exifRows(f, g);
       }
 
+      if (w.kind === 'apps') {
+        const list = this.apps();
+        base.appCount = list.length + (list.length === 1 ? ' APP' : ' APPS') + ' · RUNS IN THIS WINDOW';
+        base.apps = list.map(ap => ({
+          name: ap.name, meta: ap.meta, tag: ap.tag, aria: 'Open ' + ap.name,
+          open: () => ap.open(), key: this.keyActivate(() => ap.open()),
+          tile: 'width:44px;height:44px;flex:none;border:3px solid #14131a;background-color:' + ap.color + ';background-image:repeating-linear-gradient(135deg,rgba(20,19,26,.18) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font-family:Silkscreen,monospace;font-size:10px;color:rgba(20,19,26,.75)'
+        }));
+      }
+
+      if (w.kind === 'breathe') {
+        const b = this.breath, m = this.breathModel(w);
+        const running = b.running && !m.done;
+        const level = running ? m.to : (m.idle || m.done ? 0 : m.cur);
+        const scale = 0.38 + 0.62 * level;
+        const colors = { in: '#8fc9c2', hold: '#f2c94c', out: '#a99ce0' };
+        const col = m.idle || m.done ? '#8fc9c2' : colors[m.k];
+        const trans = running ? 'transform ' + b.dur.toFixed(2) + 's cubic-bezier(.45,0,.55,1),background-color .8s ease' : 'background-color .8s ease';
+        base.orb = 'position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;border:3px solid #14131a;box-shadow:6px 6px 0 rgba(20,19,26,.55);background-color:' + col + ';background-image:radial-gradient(rgba(20,19,26,.2) 1.3px,transparent 1.4px);background-size:7px 7px;transform:scale(' + scale.toFixed(4) + ');transition:' + trans + ';will-change:transform';
+        const names = { in: 'INHALE', hold: 'HOLD', out: 'EXHALE' };
+        base.phase = m.idle ? 'READY' : m.done ? 'COMPLETE' : !running ? 'PAUSED' : names[m.k] + ' ' + Math.ceil(m.len - m.tIn - 1e-6);
+        base.phaseSub = m.idle ? m.cycles + ' CYCLES · PRESS START' : m.done ? m.cycles + ' CYCLES · ' + (w.mins || 3) + ' MIN' : 'CYCLE ' + (m.c + 1) + ' / ' + m.cycles;
+        base.rhythm = m.P.rhythm;
+        base.remain = this.fmt(m.total - m.elapsed);
+        base.patternNote = m.P.note;
+        const chip = on => 'font-family:Silkscreen,monospace;font-size:10px;border:2px solid #14131a;padding:5px 8px;cursor:pointer;' + (on ? 'background:#14131a;color:#f3efe4' : 'background:#f3efe4;color:#14131a;box-shadow:2px 2px 0 #14131a');
+        const pats = this.breathPatterns();
+        base.patterns = Object.keys(pats).map(id => ({
+          label: pats[id].label, aria: 'Pattern ' + pats[id].label + ', ' + pats[id].rhythm,
+          style: chip((w.pattern || 'box') === id),
+          pick: () => this.setBreath(w, { pattern: id }), key: this.keyActivate(() => this.setBreath(w, { pattern: id }))
+        }));
+        base.lengths = [1, 3, 5, 10].map(n => ({
+          label: n + ' MIN', aria: n + ' minute session',
+          style: chip((w.mins || 3) === n),
+          pick: () => this.setBreath(w, { mins: n }), key: this.keyActivate(() => this.setBreath(w, { mins: n }))
+        }));
+        base.runLabel = running ? 'PAUSE' : m.idle ? 'START' : m.done ? 'AGAIN' : 'RESUME';
+        base.toggleRun = () => this.toggleBreath();
+        base.toggleRunKey = this.keyActivate(() => this.toggleBreath());
+        base.reset = () => this.resetBreath();
+        base.resetKey = this.keyActivate(() => this.resetBreath());
+        const order = ['bell', 'cues', 'off'];
+        const snd = w.sound || 'bell';
+        const nextSnd = () => { const n = order[(order.indexOf(snd) + 1) % order.length]; if (n !== 'off') this.ensureAudio(); this.patch(w.id, { sound: n }); };
+        base.soundLabel = { bell: 'SOUND: BELL', cues: 'SOUND: CUES', off: 'SOUND: OFF' }[snd];
+        base.soundAria = 'Sound mode ' + snd + '. Bell rings at start and end; cues add a soft tone on each phase.';
+        base.cycleSound = nextSnd;
+        base.cycleSoundKey = this.keyActivate(nextSnd);
+        base.soundBtn = 'border:3px solid #14131a;padding:6px 10px;font-size:10px;font-weight:700;letter-spacing:.06em;cursor:pointer;box-shadow:3px 3px 0 #14131a;background:' + (snd === 'off' ? '#dcd7c8' : '#8fc9c2');
+      }
+
       if (w.kind === 'search' || w.kind === 'recent') {
         let list;
         if (w.kind === 'search') {
@@ -847,8 +1085,14 @@ class Component extends DCLogic {
         if (e.target !== e.currentTarget) return;
         this.setState(s => ({ startOpen: false, iconIdx: -1, wins: s.wins.map(w => Object.assign({}, w, { min: true })) }), () => this.persist());
       },
+      appMenu: this.apps().map(ap => ({
+        name: ap.name,
+        open: () => ap.open(),
+        key: this.keyActivate(() => ap.open()),
+        chip: 'width:16px;height:16px;flex:none;border:2px solid #14131a;background:' + ap.color
+      })),
       taskbar: st.wins.map(w => ({
-        title: w.title,
+        title: w.kind === 'breathe' ? this.breatheTitle(w) : w.title,
         aria: (w.min ? 'Restore ' : 'Minimize ') + w.title,
         click: () => { if (!w.min && w.z === topZ) this.minimize(w.id); else this.raise(w.id); },
         key: this.keyActivate(() => { if (!w.min && w.z === topZ) this.minimize(w.id); else this.raise(w.id); }),
@@ -856,7 +1100,7 @@ class Component extends DCLogic {
         style: 'display:flex;align-items:center;gap:8px;flex:1 1 0;min-width:0;max-width:190px;overflow:hidden;padding:6px 10px;cursor:pointer;font-size:11px;letter-spacing:.04em;border:3px solid #14131a;color:#14131a;' +
           (!w.min && w.z === topZ ? 'background:#dcd7c8;box-shadow:inset 3px 3px 0 rgba(20,19,26,.22)' : 'background:#f3efe4;box-shadow:3px 3px 0 #14131a')
       })),
-      closeAll: () => this.setState({ wins: [], startOpen: false }, () => this.persist())
+      closeAll: () => { this.resetBreath(); this.setState({ wins: [], startOpen: false }, () => this.persist()); }
     };
   }
 }
