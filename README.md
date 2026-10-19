@@ -15,6 +15,18 @@ The desktop is a plain static file, so Astro serves it untouched. Astro only bui
 frame pages — those exist so links are shareable and Google has something to index,
 which a windowed desktop can't offer on its own.
 
+## Apps
+
+Small tools that open as windows on the desktop, from the **Apps** icon or the Start
+menu. They run entirely in the browser and don't touch Sanity.
+
+| App | What it does |
+| --- | --- |
+| Breathe | Guided breathing timer — box, 4-7-8, even, and long-exhale patterns; 1–10 minute sessions; optional bell |
+
+To add one: give it an entry in `apps()` in `public/index.html`, a window kind, and a
+template block alongside the others.
+
 ## Run it
 
 ```bash
