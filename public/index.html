@@ -228,13 +228,13 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 <div onClick="{{ ap.open }}" onKeyDown="{{ ap.key }}" tabindex="0" role="button" aria-label="{{ ap.aria }}" style="display:flex;align-items:center;gap:12px;border:3px solid #14131a;background:#f3efe4;box-shadow:4px 4px 0 #14131a;padding:9px 11px;cursor:pointer" style-hover="background:#14131a;color:#f3efe4">
 <span style="{{ ap.tile }}">{{ ap.tag }}</span>
 <span style="flex:1;min-width:0">
-<span style="display:block;font-family:'Archivo Black',sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:-.01em">{{ ap.name }}</span>
-<span style="display:block;font-family:'Silkscreen',monospace;font-size:9.5px;opacity:.75;margin-top:2px">{{ ap.meta }}</span>
+<span style="display:block;font-family:'Archivo Black',sans-serif;font-size:16px;letter-spacing:-.01em">{{ ap.name }}</span>
+<span style="display:block;font-size:11px;line-height:1.5;opacity:.8;margin-top:3px">{{ ap.meta }}</span>
 </span>
-<span style="font-size:10.5px;font-weight:700;letter-spacing:.1em;white-space:nowrap">OPEN →</span>
+<span style="font-size:10.5px;font-weight:700;letter-spacing:.1em;white-space:nowrap">open →</span>
 </div>
 </sc-for>
-<div style="border:3px dashed rgba(20,19,26,.35);padding:10px 11px;font-family:'Silkscreen',monospace;font-size:10px;color:#57535e">MORE APPS IN PROGRESS</div>
+<div style="border:3px dashed rgba(20,19,26,.35);padding:10px 11px;font-family:'Silkscreen',monospace;font-size:10px;color:#57535e">more apps are on the way</div>
 </div>
 </div>
 </sc-if>
@@ -252,14 +252,24 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 <div style="position:absolute;top:10px;right:10px;font-family:'Silkscreen',monospace;font-size:10px;background:#f2c94c;border:2px solid #14131a;padding:3px 6px">{{ w.remain }}</div>
 </div>
 <div style="padding:14px">
-<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:7px">PATTERN</div>
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:7px">pick a pattern</div>
 <div style="display:flex;flex-wrap:wrap;gap:6px">
 <sc-for list="{{ w.patterns }}" as="bp" hint-placeholder-count="4">
 <span onClick="{{ bp.pick }}" onKeyDown="{{ bp.key }}" tabindex="0" role="button" aria-label="{{ bp.aria }}" style="{{ bp.style }}">{{ bp.label }}</span>
 </sc-for>
 </div>
-<p style="font-family:'Instrument Serif',serif;font-size:17px;line-height:1.35;margin:9px 0 12px;color:#3d3947;text-wrap:pretty">{{ w.patternNote }}</p>
-<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:7px">LENGTH</div>
+<p style="font-family:'Instrument Serif',serif;font-size:17px;line-height:1.35;margin:10px 0 10px;color:#3d3947;text-wrap:pretty">{{ w.patternHow }}</p>
+<div style="display:grid;gap:9px;margin:0 0 14px">
+<div style="border-left:4px solid #8fc9c2;padding:1px 0 1px 10px">
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:3px">where it comes from</div>
+<div style="font-size:11.5px;line-height:1.6;color:#3d3947">{{ w.patternOrigin }}</div>
+</div>
+<div style="border-left:4px solid #f2c94c;padding:1px 0 1px 10px">
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:3px">what it's good for</div>
+<div style="font-size:11.5px;line-height:1.6;color:#3d3947">{{ w.patternUses }}</div>
+</div>
+</div>
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;margin-bottom:7px">how long</div>
 <div style="display:flex;flex-wrap:wrap;gap:6px">
 <sc-for list="{{ w.lengths }}" as="bl" hint-placeholder-count="4">
 <span onClick="{{ bl.pick }}" onKeyDown="{{ bl.key }}" tabindex="0" role="button" aria-label="{{ bl.aria }}" style="{{ bl.style }}">{{ bl.label }}</span>
@@ -267,11 +277,11 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 </div>
 <div style="display:flex;gap:8px;align-items:center;margin-top:16px;border-top:3px solid #14131a;padding-top:12px;flex-wrap:wrap">
 <span onClick="{{ w.toggleRun }}" onKeyDown="{{ w.toggleRunKey }}" tabindex="0" role="button" aria-label="{{ w.runLabel }}" style="background:#f2c94c;border:3px solid #14131a;box-shadow:4px 4px 0 #14131a;padding:8px 18px;font-size:11px;font-weight:700;letter-spacing:.1em;cursor:pointer" style-hover="transform:translate(4px,4px);box-shadow:0 0 0 #14131a">{{ w.runLabel }}</span>
-<span onClick="{{ w.reset }}" onKeyDown="{{ w.resetKey }}" tabindex="0" role="button" aria-label="Reset session" style="border:3px solid #14131a;background:#f3efe4;box-shadow:3px 3px 0 #14131a;padding:6px 11px;font-size:10.5px;font-weight:700;letter-spacing:.08em;cursor:pointer" style-hover="background:#e77aa6">RESET</span>
+<span onClick="{{ w.reset }}" onKeyDown="{{ w.resetKey }}" tabindex="0" role="button" aria-label="reset" style="border:3px solid #14131a;background:#f3efe4;box-shadow:3px 3px 0 #14131a;padding:6px 11px;font-size:10.5px;font-weight:700;letter-spacing:.08em;cursor:pointer" style-hover="background:#e77aa6">reset</span>
 <span style="flex:1"></span>
 <span onClick="{{ w.cycleSound }}" onKeyDown="{{ w.cycleSoundKey }}" tabindex="0" role="button" aria-label="{{ w.soundAria }}" style="{{ w.soundBtn }}">{{ w.soundLabel }}</span>
 </div>
-<div style="font-family:'Silkscreen',monospace;font-size:9.5px;color:#57535e;margin-top:12px">SPACE STARTS / PAUSES</div>
+<div style="font-family:'Silkscreen',monospace;font-size:9.5px;color:#57535e;margin-top:12px">press space to start or pause</div>
 </div>
 </div>
 </sc-if>
@@ -300,7 +310,7 @@ a{color:#e77aa6}a:hover{color:#f2c94c}
 </div>
 </sc-for>
 <div style="height:3px;background:#14131a;margin:8px 6px"></div>
-<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;padding:6px 10px 8px">APPS</div>
+<div style="font-family:'Silkscreen',monospace;font-size:10px;color:#57535e;padding:6px 10px 8px">apps</div>
 <sc-for list="{{ appMenu }}" as="am" hint-placeholder-count="1">
 <div onClick="{{ am.open }}" onKeyDown="{{ am.key }}" tabindex="0" role="menuitem" style="display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;font-size:12.5px;letter-spacing:.02em" style-hover="background:#14131a;color:#f3efe4">
 <span style="{{ am.chip }}"></span>{{ am.name }}
@@ -371,19 +381,39 @@ class Component extends DCLogic {
   // Add a new app by giving it an entry here, a window kind, and a template block.
   apps() {
     return [
-      { id: 'breathe', name: 'Breathe', meta: 'ZEN TIMER · BREATHING', tag: 'BRE', color: '#8fc9c2', open: () => this.openBreathe() }
+      { id: 'breathe', name: 'breathe', meta: 'a simple breathing timer for slowing down or settling in', tag: 'bre', color: '#8fc9c2', open: () => this.openBreathe() }
     ];
   }
-  openApps() { this.openPanel('apps', 'APPS', '#e9a8d2', { w: 400 }); }
-  openBreathe() { this.openPanel('breathe', 'BREATHE', '#8fc9c2', { w: 400, pattern: 'box', mins: 3, sound: 'bell' }); }
+  openApps() { this.openPanel('apps', 'apps', '#e9a8d2', { w: 400 }); }
+  openBreathe() { this.openPanel('breathe', 'breathe', '#8fc9c2', { w: 400, pattern: 'box', mins: 3, sound: 'bell' }); }
 
   // ---- Breathe ------------------------------------------------------------
   breathPatterns() {
     return {
-      box:  { label: 'BOX',      rhythm: '4 · 4 · 4 · 4', phases: [['in', 4], ['hold', 4], ['out', 4], ['hold', 4]], note: 'Equal counts in, hold, out, hold. Steady and even.' },
-      r478: { label: '4-7-8',    rhythm: '4 · 7 · 8',     phases: [['in', 4], ['hold', 7], ['out', 8]], note: 'In for four, hold for seven, out for eight. Slow and settling.' },
-      even: { label: 'EVEN',     rhythm: '5.5 · 5.5',     phases: [['in', 5.5], ['out', 5.5]], note: 'Five and a half seconds in, five and a half out. About six breaths a minute.' },
-      long: { label: 'LONG OUT', rhythm: '4 · 6',         phases: [['in', 4], ['out', 6]], note: 'Breathe out a little longer than you breathe in. An easy place to start.' }
+      box: {
+        label: 'box', name: 'box breathing', phases: [['in', 4], ['hold', 4], ['out', 4], ['hold', 4]],
+        how: 'breathe in for four, hold for four, breathe out for four, and hold for four, so every breath traces the four sides of a square.',
+        origin: 'it is often called navy seal breathing because mark divine, a former navy seal, taught it widely after learning breath control through martial arts during his training.',
+        uses: 'staying calm while keeping your focus, like before a big task, a hard conversation, or anything that needs a clear head.'
+      },
+      r478: {
+        label: '4-7-8', name: '4-7-8 breathing', phases: [['in', 4], ['hold', 7], ['out', 8]],
+        how: 'breathe in for four, hold for seven, and then let the air out slowly for eight.',
+        origin: 'dr. andrew weil, an integrative medicine doctor, made this one popular, and it grew out of pranayama, the practice of breath control in yoga.',
+        uses: 'winding down at the end of the day, easing stress, and getting ready to fall asleep.'
+      },
+      even: {
+        label: 'even', name: 'even breathing', phases: [['in', 5.5], ['out', 5.5]],
+        how: 'breathe in for five and a half seconds and out for five and a half, which works out to about six breaths a minute.',
+        origin: 'researchers call this resonance or coherent breathing, and about six breaths a minute is the pace used in heart rate variability training, where people learn to steady their heart rhythm with their breath.',
+        uses: 'feeling steady and balanced, and in one study people who breathed this way had lower blood pressure and a better mood during a stressful math task.'
+      },
+      long: {
+        label: 'long exhale', name: 'long exhale', phases: [['in', 4], ['out', 6]],
+        how: 'breathe in for four and out for six, letting each breath out last a little longer than the one coming in.',
+        origin: 'your heart naturally speeds up a little when you breathe in and slows down a little when you breathe out, so stretching out the exhale leans into the slower side.',
+        uses: 'calming down quickly, and it is an easy place to start if holding your breath feels uncomfortable.'
+      }
     };
   }
   freshBreath() { return { running: false, acc: 0, t0: 0, done: false, key: null, dur: 0 }; }
@@ -412,12 +442,12 @@ class Component extends DCLogic {
       t -= len; level = to;
     }
   }
-  fmt(sec) { const s = Math.max(0, Math.ceil(sec)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+  fmt(sec) { const s = Math.max(0, Math.ceil(sec)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
   breatheTitle(w) {
     const b = this.breath, m = this.breathModel(w);
-    if (m.idle) return 'BREATHE';
-    if (m.done) return 'BREATHE · DONE';
-    return 'BREATHE · ' + this.fmt(m.total - m.elapsed) + (b.running ? '' : ' · PAUSED');
+    if (m.idle) return 'breathe';
+    if (m.done) return 'breathe, all done';
+    return b.running ? 'breathe, ' + this.fmt(m.total - m.elapsed) + ' left' : 'breathe, paused';
   }
   ensureAudio() {
     try {
@@ -491,7 +521,7 @@ class Component extends DCLogic {
     const list = [];
     if (this.notes.length) list.push({ kind: 'note', name: 'Notes', color: '#f3efe4', accent: '#f2c94c', aria: 'Open field notes', dark: false });
     if (this.settings) list.push({ kind: 'contact', name: 'Contact', color: '#14131a', accent: '#8fc9c2', title: 'CONTACT', aria: 'Open contact', dark: true });
-    list.push({ kind: 'apps', name: 'Apps', color: '#e9a8d2', accent: '#e9a8d2', title: 'APPS', aria: 'Open apps', dark: false });
+    list.push({ kind: 'apps', name: 'apps', color: '#e9a8d2', accent: '#e9a8d2', title: 'apps', aria: 'Open apps', dark: false });
     list.push({ kind: 'search', name: 'Search', color: '#f2c94c', accent: '#f2c94c', title: 'SEARCH', aria: 'Open search', dark: false });
     list.push({ kind: 'recent', name: 'Recent', color: '#a99ce0', accent: '#a99ce0', title: 'RECENTLY VIEWED', aria: 'Open recently viewed', dark: false });
     return list;
@@ -606,8 +636,8 @@ class Component extends DCLogic {
       else if (t === 'contact' && this.settings) wins.push({ id: 'contact', kind: 'contact', title: 'CONTACT', accent: '#8fc9c2', x, y, w: 400, z });
       else if (t === 'search') wins.push({ id: 'search', kind: 'search', title: 'SEARCH', accent: '#f2c94c', x, y, w: 440, z, query: '' });
       else if (t === 'recent') wins.push({ id: 'recent', kind: 'recent', title: 'RECENTLY VIEWED', accent: '#a99ce0', x, y, w: 420, z });
-      else if (t === 'apps') wins.push({ id: 'apps', kind: 'apps', title: 'APPS', accent: '#e9a8d2', x, y, w: 400, z });
-      else if (t === 'breathe') wins.push({ id: 'breathe', kind: 'breathe', title: 'BREATHE', accent: '#8fc9c2', x, y, w: 400, z, pattern: 'box', mins: 3, sound: 'bell' });
+      else if (t === 'apps') wins.push({ id: 'apps', kind: 'apps', title: 'apps', accent: '#e9a8d2', x, y, w: 400, z });
+      else if (t === 'breathe') wins.push({ id: 'breathe', kind: 'breathe', title: 'breathe', accent: '#8fc9c2', x, y, w: 400, z, pattern: 'box', mins: 3, sound: 'bell' });
     });
     this.setState({ wins, z });
   }
@@ -820,7 +850,7 @@ class Component extends DCLogic {
     const a = this.area();
     const narrow = st.narrow;
     const dot = c => 'position:absolute;inset:0;background-color:rgba(20,19,26,.48);background-image:radial-gradient(' + c + ' 1.5px,transparent 1.6px);background-size:7px 7px;transition:opacity .25s ease;cursor:pointer';
-    const toolTag = { note: 'NTS', contact: 'MSG', apps: 'APP', search: 'FND', recent: 'RCT' };
+    const toolTag = { note: 'NTS', contact: 'MSG', apps: 'app', search: 'FND', recent: 'RCT' };
     const iconEntries = this.genres.map(g => ({ name: g.name, color: g.color, tag: (g.code || g.name.slice(0, 3)).toUpperCase(), aria: 'Open ' + g.name + ' gallery, ' + g.count + ' frames', dark: false }))
       .concat(this.tools().map(t => ({ name: t.name, color: t.color, tag: toolTag[t.kind] || t.name.slice(0, 3).toUpperCase(), aria: t.aria, dark: t.dark })));
 
@@ -962,7 +992,7 @@ class Component extends DCLogic {
 
       if (w.kind === 'apps') {
         const list = this.apps();
-        base.appCount = list.length + (list.length === 1 ? ' APP' : ' APPS') + ' · RUNS IN THIS WINDOW';
+        base.appCount = (list.length === 1 ? 'one app so far' : list.length + ' apps so far') + ', and each one opens in its own window';
         base.apps = list.map(ap => ({
           name: ap.name, meta: ap.meta, tag: ap.tag, aria: 'Open ' + ap.name,
           open: () => ap.open(), key: this.keyActivate(() => ap.open()),
@@ -979,25 +1009,28 @@ class Component extends DCLogic {
         const col = m.idle || m.done ? '#8fc9c2' : colors[m.k];
         const trans = running ? 'transform ' + b.dur.toFixed(2) + 's cubic-bezier(.45,0,.55,1),background-color .8s ease' : 'background-color .8s ease';
         base.orb = 'position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;border:3px solid #14131a;box-shadow:6px 6px 0 rgba(20,19,26,.55);background-color:' + col + ';background-image:radial-gradient(rgba(20,19,26,.2) 1.3px,transparent 1.4px);background-size:7px 7px;transform:scale(' + scale.toFixed(4) + ');transition:' + trans + ';will-change:transform';
-        const names = { in: 'INHALE', hold: 'HOLD', out: 'EXHALE' };
-        base.phase = m.idle ? 'READY' : m.done ? 'COMPLETE' : !running ? 'PAUSED' : names[m.k] + ' ' + Math.ceil(m.len - m.tIn - 1e-6);
-        base.phaseSub = m.idle ? m.cycles + ' CYCLES · PRESS START' : m.done ? m.cycles + ' CYCLES · ' + (w.mins || 3) + ' MIN' : 'CYCLE ' + (m.c + 1) + ' / ' + m.cycles;
-        base.rhythm = m.P.rhythm;
-        base.remain = this.fmt(m.total - m.elapsed);
-        base.patternNote = m.P.note;
+        const names = { in: 'breathe in', hold: 'hold', out: 'breathe out' };
+        const mins = w.mins || 3;
+        base.phase = m.idle ? 'ready when you are' : m.done ? 'all done' : !running ? 'paused' : names[m.k] + ' ' + Math.ceil(m.len - m.tIn - 1e-6);
+        base.phaseSub = m.idle ? m.cycles + ' rounds in this session' : m.done ? 'you finished ' + m.cycles + ' rounds' : 'round ' + (m.c + 1) + ' of ' + m.cycles;
+        base.rhythm = m.P.name;
+        base.remain = this.fmt(m.total - m.elapsed) + ' left';
+        base.patternHow = m.P.how;
+        base.patternOrigin = m.P.origin;
+        base.patternUses = m.P.uses;
         const chip = on => 'font-family:Silkscreen,monospace;font-size:10px;border:2px solid #14131a;padding:5px 8px;cursor:pointer;' + (on ? 'background:#14131a;color:#f3efe4' : 'background:#f3efe4;color:#14131a;box-shadow:2px 2px 0 #14131a');
         const pats = this.breathPatterns();
         base.patterns = Object.keys(pats).map(id => ({
-          label: pats[id].label, aria: 'Pattern ' + pats[id].label + ', ' + pats[id].rhythm,
+          label: pats[id].label, aria: pats[id].name,
           style: chip((w.pattern || 'box') === id),
           pick: () => this.setBreath(w, { pattern: id }), key: this.keyActivate(() => this.setBreath(w, { pattern: id }))
         }));
         base.lengths = [1, 3, 5, 10].map(n => ({
-          label: n + ' MIN', aria: n + ' minute session',
+          label: n === 1 ? '1 minute' : n + ' minutes', aria: n === 1 ? '1 minute' : n + ' minutes',
           style: chip((w.mins || 3) === n),
           pick: () => this.setBreath(w, { mins: n }), key: this.keyActivate(() => this.setBreath(w, { mins: n }))
         }));
-        base.runLabel = running ? 'PAUSE' : m.idle ? 'START' : m.done ? 'AGAIN' : 'RESUME';
+        base.runLabel = running ? 'pause' : m.idle ? 'start' : m.done ? 'go again' : 'resume';
         base.toggleRun = () => this.toggleBreath();
         base.toggleRunKey = this.keyActivate(() => this.toggleBreath());
         base.reset = () => this.resetBreath();
@@ -1005,8 +1038,8 @@ class Component extends DCLogic {
         const order = ['bell', 'cues', 'off'];
         const snd = w.sound || 'bell';
         const nextSnd = () => { const n = order[(order.indexOf(snd) + 1) % order.length]; if (n !== 'off') this.ensureAudio(); this.patch(w.id, { sound: n }); };
-        base.soundLabel = { bell: 'SOUND: BELL', cues: 'SOUND: CUES', off: 'SOUND: OFF' }[snd];
-        base.soundAria = 'Sound mode ' + snd + '. Bell rings at start and end; cues add a soft tone on each phase.';
+        base.soundLabel = { bell: 'bell at start and end', cues: 'soft tone each step', off: 'sound off' }[snd];
+        base.soundAria = base.soundLabel + ', tap to change';
         base.cycleSound = nextSnd;
         base.cycleSoundKey = this.keyActivate(nextSnd);
         base.soundBtn = 'border:3px solid #14131a;padding:6px 10px;font-size:10px;font-weight:700;letter-spacing:.06em;cursor:pointer;box-shadow:3px 3px 0 #14131a;background:' + (snd === 'off' ? '#dcd7c8' : '#8fc9c2');
