@@ -386,7 +386,7 @@ class Component extends DCLogic {
   // Add a new app by giving it an entry here, a window kind, and a template block.
   apps() {
     return [
-      { id: 'breathe', name: 'breathe', meta: 'a simple breathing timer for slowing down or settling in', tag: 'bre', color: '#8fc9c2', open: () => this.openBreathe() }
+      { id: 'breathe', name: 'breathe', meta: 'a simple breathing timer', tag: 'bre', color: '#8fc9c2', open: () => this.openBreathe() }
     ];
   }
   openApps() { this.openPanel('apps', 'apps', '#e9a8d2', { w: 400 }); }
@@ -411,7 +411,7 @@ class Component extends DCLogic {
         label: 'even', name: 'even breathing', phases: [['in', 5.5], ['out', 5.5]],
         how: 'breathe in for five and a half seconds and out for five and a half, which works out to about six breaths a minute.',
         origin: 'it also goes by resonance or coherent breathing, and it keeps you at a slow, even pace of about six breaths a minute.',
-        effects: [['steady', '#f2c94c'], ['balanced', '#8fc9c2'], ['centered', '#a99ce0']]
+        effects: [['steady', '#f2c94c'], ['level headed', '#8fc9c2'], ['unhurried', '#a99ce0']]
       },
       long: {
         label: 'long exhale', name: 'long exhale', phases: [['in', 4], ['out', 6]],
